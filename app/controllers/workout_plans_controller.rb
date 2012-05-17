@@ -17,8 +17,6 @@ class WorkoutPlansController < ApplicationController
     @workout_days = @workout_plan.workout_days
     @workout_day = WorkoutDay.new
 
-    @workout_day.workout_plan_id = @workout_plan.id
-
     assign_workout_selection_list
 
     respond_to do |format|

@@ -1,12 +1,15 @@
 BodykitMe::Application.routes.draw do
+  resources :workout_sessions do
+    member do
+      post 'show'
+    end
+  end
+
   resources :units
 
   resources :workout_plans do
     member do
       post 'click'
-    end
-
-    member do
       post 'addWorkOut'
     end
 

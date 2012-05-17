@@ -1,0 +1,27 @@
+<h1>Your Workoutsession at:</h1>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date:</b>
+  <%= @workout_session.date %>
+</p>
+<p>
+  <h2>Log your activity</h2>
+  <% @exercises.each do |e| %>
+    <%= form_tag do %>
+    <strong><%= e[:e].name %></strong><br/>
+    Repetitions: <%= text_field "exercise", "multiplier", {:value => e[:multiplier]}%>
+    Value: <%= text_field "exercise", "value", {:value => e[:value]} %>
+           <%=  if !e[:e].unit.nil?
+                    e[:e].unit.name
+                end %>
+    <%= hidden_field "exercise", "exerciseWorkoutThrillsId", {:value => e[:id]} %>
+    <%= button_tag "add" %>
+    <% end %>
+    <hr/>
+  <% end %>
+</p>
+
+
+<%= link_to 'Edit', edit_workout_session_path(@workout_session) %> |
+<%= link_to 'Back', workout_sessions_path %>

@@ -1,0 +1,30 @@
+<%= form_for(@workout_session) do |f| %>
+  <% if @workout_session.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@workout_session.errors.count, "error") %> prohibited this workout_session from being saved:</h2>
+
+      <ul>
+      <% @workout_session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :date %><br />
+    <%= f.datetime_select :date %>
+  </div>
+  <div class="field">
+    <%= f.label "Please chose a workout day as a template" %><br />
+    <% if !@workout_session.workout_day.nil? %>
+        <div style="color:red;font-style: italic;">## CANNOT BE CHANGED YET</div>
+        <%= select("workout_day", "id", @workout_days_selection_list) %>
+    <% else %>
+        <%= select("workout_day", "id", @workout_days_selection_list, {:prompt => "Select a workoutDay"}) %>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
