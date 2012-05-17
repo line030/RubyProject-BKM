@@ -22,7 +22,11 @@
 
 <p>
   <b>Unit:</b>
-  <%= link_to @unit.name, @unit %>
+  <%=
+      if !@unit.nil?
+        link_to @unit.name, @unit
+      end
+  %>
 </p>
 
 

@@ -4,6 +4,26 @@
   <b>Day:</b>
   <%= @workout_day.day %>
 </p>
+<p>
+  <b>Exercises:</b><br />
+  <% @exercises.each do |e| %>
+    <hr/>
+    <%= link_to e.name, e %>  <br />
+    Beschreibung: <%= e.description %><br/>
+  <%
+     end
+  %>
+</p>
+<p>
+  <strong>Add existing exercise: </strong><br />
+  <%= form_tag addExercise_workout_day_path %>
+  <%= select("exercise", "id", @exercises_selection_list, {:prompt => "Select a Exercise"}) %>
+  <br /> <br/>
+  <em>OR add a new exercise</em><br/>
+  Name: <br/><%= text_field "exercise", "name" %> <br/>
+  Description:<br/> <%= text_area "exercise", "description" %> <br/>
+  <%= submit_tag 'add' %>
+</p>
 
 
 <%= link_to 'Edit', edit_workout_day_path(@workout_day) %> |

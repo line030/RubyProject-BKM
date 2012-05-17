@@ -1,4 +1,10 @@
 class WorkoutDaysController < ApplicationController
+  def assign_exercises_selection_list
+    @exercises_selection_list = Exercise.all.collect { |exercise|
+      [exercise.name, exercise.id]
+    }
+  end
+
   # GET /workout_days
   # GET /workout_days.json
   def index
@@ -14,6 +20,10 @@ class WorkoutDaysController < ApplicationController
   # GET /workout_days/1.json
   def show
     @workout_day = WorkoutDay.find(params[:id])
+
+    @exercises = @workout_day.exercises
+
+    assign_exercises_selection_list
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,6 +45,31 @@ class WorkoutDaysController < ApplicationController
   # GET /workout_days/1/edit
   def edit
     @workout_day = WorkoutDay.find(params[:id])
+  end
+
+  #POST /workout_days/1/addExercise'
+  #POST /workout_days/1/addExercise.json'
+  def addExercise
+    @workout_day = WorkoutDay.find(params[:id])
+    exerciseId = params[:exercise][:id]
+
+    if (params[:exercise][:name] != "")
+      exercise = Exercise.create(:name => params[:exercise][:name],
+      :description => params[:exercise][:description])
+    else
+      exercise = Exercise.find(exerciseId)
+    end
+
+    if !exercise.nil?
+      @workout_day.exercises << exercise
+    end
+
+    @workout_day.save
+
+    respond_to do |format|
+        format.html { redirect_to @workout_day, notice: 'Exercise successfully added' }
+        format.json { render json: @workout_day, status: :created, location: @workout_day }
+    end
   end
 
   # POST /workout_days
