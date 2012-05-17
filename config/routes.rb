@@ -1,7 +1,16 @@
 BodykitMe::Application.routes.draw do
   resources :units
 
-  resources :workout_plans
+  resources :workout_plans do
+    member do
+      post 'click'
+    end
+
+    member do
+      post 'addWorkOut'
+    end
+
+  end
 
   resources :workout_days do
     member do
@@ -11,8 +20,6 @@ BodykitMe::Application.routes.draw do
   end
 
   resources :exercises
-
-  #match 'workout_day/:id/addExercise/:exerciseId' => ': workout_days#index', :as => :add_exercise_to_workout_day
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
