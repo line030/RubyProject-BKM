@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(:version => 20120517221310) do
     t.integer "workout_day_id"
   end
 
+  create_table "exercises_workout_thrills", :force => true do |t|
+    t.integer "exercise_id"
+    t.integer "workout_session_id"
+    t.integer "value"
+    t.integer "multiplier"
+  end
+
   create_table "units", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -60,6 +67,13 @@ ActiveRecord::Schema.define(:version => 20120517221310) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "workout_sessions", :force => true do |t|
+    t.datetime "date"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "workout_day_id"
   end
 
 end

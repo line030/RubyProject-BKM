@@ -1,4 +1,10 @@
 BodykitMe::Application.routes.draw do
+  resources :workout_sessions do
+    member do
+      post 'show'
+    end
+  end
+  
   resources :categories
 
   resources :aims
@@ -8,9 +14,6 @@ BodykitMe::Application.routes.draw do
   resources :workout_plans do
     member do
       post 'click'
-    end
-
-    member do
       post 'addWorkOut'
     end
 
@@ -75,7 +78,6 @@ BodykitMe::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-
 
   # See how all your routes lay out with "rake routes"
 
