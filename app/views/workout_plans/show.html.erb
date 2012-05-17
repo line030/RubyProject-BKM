@@ -1,10 +1,56 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
+  <b>Trainings Plan Name:</b>
   <%= @workout_plan.name %>
-</p>
+  <br/>
+<hr/>
+  <p>
+  <b>Added-WorkOutDays:</b><br/>
 
 
+   <% @workout_days.each do | w | %>
+        <br/>
+       <%= link_to w.day, workout_day_path%>
+    <% end %>
+
+  </p>
+<hr/>
+<b>Create New TrainingDay</b>
+
+<%=  form_for(@workout_day) do |f| %>
+    <% if @workout_day.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@workout_day.errors.count, "error") %> prohibited this workout_day from being saved:</h2>
+
+          <ul>
+            <% @workout_day.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :day %><br />
+      <%= f.text_field :day %>
+      <%= f.hidden_field :workout_plan_id, :value => @workout_plan.id %>
+    </div>
+    <div class="actions">
+      <%= f.submit  %>
+    </div>
+<% end %>
+
+    <%= button_to "New", click_workout_plan_path %>
+
+<hr/>
+
+<strong>Add existing Training Days: </strong><br />
+
+<%= form_tag addWorkOut_workout_plan_path %>
+<%= select("workout_day", "id", @workout_day_selection_list , {:prompt => "Select a Traing Day"}) %>
+<%= submit_tag 'add' %>
+
+<hr/>
 <%= link_to 'Edit', edit_workout_plan_path(@workout_plan) %> |
 <%= link_to 'Back', workout_plans_path %>

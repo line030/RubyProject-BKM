@@ -3,8 +3,7 @@ class WorkoutPlansController < ApplicationController
   # GET /workout_plans.json
   def index
     @workout_plans = WorkoutPlan.all
-
-    respond_to do |format|
+      respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @workout_plans }
     end
@@ -15,10 +14,42 @@ class WorkoutPlansController < ApplicationController
   def show
     @workout_plan = WorkoutPlan.find(params[:id])
 
+    @workout_days = @workout_plan.workout_days
+    @workout_day = WorkoutDay.new
+
+    @workout_day.workout_plan_id = @workout_plan.id
+
+    assign_workout_selection_list
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @workout_plan }
     end
+  end
+
+  def click
+    render :text => 'PRESSED', :layout => false
+  end
+
+  def addWorkOut
+    @workout_plan = WorkoutPlan.find(params[:id])
+
+    workOutDayId = params[:workout_day][:id]
+    workout_day = WorkoutDay.find(workOutDayId)
+
+    @workout_plan.workout_days << workout_day
+
+    @workout_plan.save
+
+    respond_to do |format|
+      format.html { redirect_to @workout_plan, notice: 'Workout day added!' }
+      format.json { render json: @workout_plan, status: :created, location: @workout_plan }
+    end
+  end
+
+  def assign_workout_selection_list
+
+    @workout_day_selection_list = WorkoutDay.all.collect {|work| [ work.day, work.id ] }
   end
 
   # GET /workout_plans/new
