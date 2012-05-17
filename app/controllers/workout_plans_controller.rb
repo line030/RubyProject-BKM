@@ -15,6 +15,7 @@ class WorkoutPlansController < ApplicationController
     @workout_plan = WorkoutPlan.find(params[:id])
 
     @workout_days = @workout_plan.workout_days
+
     @workout_day = WorkoutDay.new
 
     @workout_day.workout_plan_id = @workout_plan.id

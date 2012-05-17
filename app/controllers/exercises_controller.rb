@@ -3,6 +3,7 @@ class ExercisesController < ApplicationController
   # GET /exercises.json
   def index
     @exercises = Exercise.all
+
     unit = @exercises.collect { | e |
       e.unit ? [e.id, e.unit.name] : [e.id, "no Unit specified"]
     }
@@ -18,7 +19,7 @@ class ExercisesController < ApplicationController
   # GET /exercises/1.json
   def show
     @exercise = Exercise.find(params[:id])
-    @unit = @exercise.unit;
+    @unit = @exercise.unit
 
     respond_to do |format|
       format.html # show.html.erb
@@ -30,8 +31,7 @@ class ExercisesController < ApplicationController
   # GET /exercises/new.json
   def new
     @exercise = Exercise.new
-
-   assign_unit_selection_list
+    assign_unit_selection_list
 
     respond_to do |format|
       format.html # new.html.erb

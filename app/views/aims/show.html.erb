@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @aim.name %>
+</p>
+
+<p>
+  <b>Value:</b>
+  <%= @aim.value %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%=
+      if !@category.nil?
+        link_to @category.name, @category
+      end
+  %>
+</p>
+
+<%= link_to 'Edit', edit_aim_path(@aim) %> |
+<%= link_to 'Back', aims_path %>
