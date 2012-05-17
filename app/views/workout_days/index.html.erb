@@ -1,0 +1,23 @@
+<h1>Listing workout_days</h1>
+
+<table>
+  <tr>
+    <th>Day</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @workout_days.each do |workout_day| %>
+  <tr>
+    <td><%= workout_day.day %></td>
+    <td><%= link_to 'Show', workout_day %></td>
+    <td><%= link_to 'Edit', edit_workout_day_path(workout_day) %></td>
+    <td><%= link_to 'Destroy', workout_day, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Workout day', new_workout_day_path %>

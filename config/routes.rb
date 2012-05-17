@@ -1,4 +1,12 @@
 BodykitMe::Application.routes.draw do
+  resources :units
+
+  resources :workout_plans
+
+  resources :workout_days
+
+  resources :exercises
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
