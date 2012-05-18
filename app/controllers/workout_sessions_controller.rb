@@ -36,6 +36,13 @@ class WorkoutSessionsController < ApplicationController
      # return
     end
 
+    if @workout_session.workout_day.nil?
+        @day = "No Training Day in WorkOut Session"
+      else
+        @day = @workout_session.workout_day.day
+    end
+
+
     @exercises = []
     exerciseWorkoutThrills.each do |e|
       @exercises << {:e => e.exercise, :id => e.id, :value => e.value, :multiplier => e.multiplier}
@@ -70,14 +77,22 @@ class WorkoutSessionsController < ApplicationController
   # POST /workout_sessions.json
   def create
     @workout_session = WorkoutSession.new(params[:workout_session])
-    workout_day_id = params[:workout_day][:id]
-    workout_day = WorkoutDay.find(workout_day_id)
 
-    @workout_session.workout_day = workout_day
+    workout_day_id = params[:workout_day][:id]    # fehler :(
 
-    workout_day.exercises.each { |e|
-      @workout_session.exercises << e
-    }
+    # if the selected workoutDay is null
+    if (workout_day_id.empty? ) #workout_day_id.nil? ||
+         @workout_session.workout_day = nil
+
+    else
+      workout_day = WorkoutDay.find(workout_day_id)
+      @workout_session.workout_day = workout_day
+
+      workout_day.exercises.each { |e|
+        @workout_session.exercises << e
+      }
+
+    end
 
     respond_to do |format|
       if @workout_session.save

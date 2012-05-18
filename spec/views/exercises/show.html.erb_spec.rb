@@ -7,7 +7,7 @@ describe "exercises/show" do
       :description => "MyText",
       :picture => "Picture",
       :points => 1,
-      :unit => "Unit"
+      :unit_id => 1
     ))
   end
 
