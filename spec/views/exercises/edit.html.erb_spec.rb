@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe "exercises/edit" do
   before(:each) do
+
     @exercise = assign(:exercise, stub_model(Exercise,
       :name => "MyString",
       :description => "MyText",
       :picture => "MyString",
       :points => 1,
-      :unit => "MyString"
+      :unit_id => 1
     ))
   end
 
@@ -20,7 +21,7 @@ describe "exercises/edit" do
       assert_select "textarea#exercise_description", :name => "exercise[description]"
       assert_select "input#exercise_picture", :name => "exercise[picture]"
       assert_select "input#exercise_points", :name => "exercise[points]"
-      assert_select "input#exercise_unit", :name => "exercise[unit]"
+      assert_select "input#exercise_unit_id", :name => "exercise[unit_id]"
     end
   end
 end

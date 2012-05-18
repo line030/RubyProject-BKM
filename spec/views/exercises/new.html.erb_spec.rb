@@ -7,7 +7,7 @@ describe "exercises/new" do
       :description => "MyText",
       :picture => "MyString",
       :points => 1,
-      :unit => "MyString"
+      :unit_id => 1
     ).as_new_record)
   end
 
@@ -20,7 +20,7 @@ describe "exercises/new" do
       assert_select "textarea#exercise_description", :name => "exercise[description]"
       assert_select "input#exercise_picture", :name => "exercise[picture]"
       assert_select "input#exercise_points", :name => "exercise[points]"
-      assert_select "input#exercise_unit", :name => "exercise[unit]"
+      assert_select "input#exercise_unit_id", :name => "exercise[unit_id]"
     end
   end
 end

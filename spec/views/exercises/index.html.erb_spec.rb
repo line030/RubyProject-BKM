@@ -8,14 +8,14 @@ describe "exercises/index" do
         :description => "MyText",
         :picture => "Picture",
         :points => 1,
-        :unit => "Unit"
+        :unit_id => 1
       ),
       stub_model(Exercise,
         :name => "Name",
         :description => "MyText",
         :picture => "Picture",
         :points => 1,
-        :unit => "Unit"
+        :unit_id => 1
       )
     ])
   end
@@ -27,6 +27,6 @@ describe "exercises/index" do
     assert_select "tr>td", :text => "MyText".to_s, :count => 2
     assert_select "tr>td", :text => "Picture".to_s, :count => 2
     assert_select "tr>td", :text => 1.to_s, :count => 2
-    assert_select "tr>td", :text => "Unit".to_s, :count => 2
+    assert_select "tr>td", :text => 1.to_s, :count => 2
   end
 end

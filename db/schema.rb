@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517221310) do
+ActiveRecord::Schema.define(:version => 20120518123718) do
 
   create_table "aims", :force => true do |t|
     t.string   "name"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(:version => 20120517221310) do
   create_table "exercises_workout_thrills", :force => true do |t|
     t.integer "exercise_id"
     t.integer "workout_session_id"
-    t.integer "value"
     t.integer "multiplier"
+    t.decimal "value",              :precision => 8, :scale => 2
   end
 
   create_table "units", :force => true do |t|
