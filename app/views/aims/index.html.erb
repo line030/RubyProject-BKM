@@ -4,7 +4,7 @@
   <tr>
     <th>Name</th>
     <th>Value</th>
-    <!--<th>Einheit</th> -->
+    <th>Einheit</th>
     <th>Category</th>
     <th></th>
     <th></th>
@@ -14,7 +14,12 @@
   <tr>
     <td><%= aim.name %></td>
     <td><%= aim.value %></td>
-    <!--<td><%= aim.category.unit.name%></td> -->
+    <td>
+    <% if !aim.category.nil? %>
+        <%= aim.category.unit.name %>
+    <% else %>
+      <%= "No Unit" %>
+    <% end %></td>
     <td><%= @categories[aim.id] %></td>
     <td><%= link_to 'Show', aim %></td>
     <td><%= link_to 'Edit', edit_aim_path(aim) %></td>
