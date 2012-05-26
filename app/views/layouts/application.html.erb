@@ -7,8 +7,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="loginBox">
-  Login | Logout | Registrieren
+<div id="loginBox">
+  <% if current_user %>
+      Welcome, <%= current_user.login %>! |
+      <%= link_to "Edit profile", edit_user_path(current_user)  %> | 
+      <%=  link_to "Logout", logout_path %>
+  <% else %>
+      <%= link_to "regiter", new_user_path %> |
+      <%= link_to "Login", login_path %>
+  <% end %>
 </div>
 
 <%= yield %>
