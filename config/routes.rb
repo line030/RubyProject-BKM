@@ -4,6 +4,7 @@ BodykitMe::Application.routes.draw do
   resources :users
   get "login" => "user_sessions#new"
   get "logout" => "user_sessions#destroy"
+  get "register" => "users#new"
 
   resources :workout_sessions do
     member do
@@ -33,6 +34,10 @@ BodykitMe::Application.routes.draw do
   end
 
   resources :exercises
+
+  resources :member_area
+
+  #get "member_area" => "member_area#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
