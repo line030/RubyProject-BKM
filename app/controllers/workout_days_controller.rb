@@ -1,4 +1,7 @@
 class WorkoutDaysController < ApplicationController
+
+  before_filter :authenticate
+
   def assign_exercises_selection_list
     @exercises_selection_list = Exercise.all.collect { |exercise|
       [exercise.name, exercise.id]

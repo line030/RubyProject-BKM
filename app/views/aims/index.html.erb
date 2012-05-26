@@ -20,7 +20,14 @@
     <% else %>
       <%= "No Unit" %>
     <% end %></td>
-    <td><%= @categories[aim.id] %></td>
+    <td>
+      <% if aim.id.nil? %>
+        <%= @categories[aim.id] %>
+      <% else %>
+          <%= "No Category" %>
+        <% end %>
+    </td>
+
     <td><%= link_to 'Show', aim %></td>
     <td><%= link_to 'Edit', edit_aim_path(aim) %></td>
     <td><%= link_to 'Destroy', aim, confirm: 'Are you sure?', method: :delete %></td>

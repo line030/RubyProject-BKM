@@ -1,4 +1,7 @@
 class CategoriesController < ApplicationController
+
+  before_filter :authenticate
+
   # GET /categories
   # GET /categories.json
   def index

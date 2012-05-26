@@ -1,4 +1,7 @@
 class UnitsController < ApplicationController
+
+  before_filter :authenticate
+
   # GET /units
   # GET /units.json
   def index

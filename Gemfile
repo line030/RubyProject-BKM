@@ -49,3 +49,5 @@ end
 group :test do
   gem "cucumber-rails"
 end
+
+gem	'authlogic'

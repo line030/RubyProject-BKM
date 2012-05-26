@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe "aims/new" do
   before(:each) do
+
+    assign(:category_selection_list,[])
+
     assign(:aim, stub_model(Aim,
       :name => "MyAim1",
       :value => 5,
@@ -16,7 +19,7 @@ describe "aims/new" do
     assert_select "form", :action => aims_path, :method => "post" do
       assert_select "input#aim_name", :name => "aim[name]"
       assert_select "input#aim_value", :name => "aim[value]"
-      assert_select "input#aim_category_id", :name => "aim[category_id]"
+#      assert_select "input#aim_category_id", :name => "aim[category_id]"
     end
   end
 end

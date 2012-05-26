@@ -1,4 +1,7 @@
 class AimsController < ApplicationController
+
+  before_filter :authenticate
+
   # GET /aims
   # GET /aims.json
   def index
@@ -31,6 +34,7 @@ class AimsController < ApplicationController
   # GET /aims/new.json
   def new
     @aim = Aim.new
+   # @category_selection_list = []
     assign_category_selection_list
 
     respond_to do |format|
@@ -40,7 +44,14 @@ class AimsController < ApplicationController
   end
 
   def assign_category_selection_list
-    @category_selection_list = Category.all.collect {|category| [ category.name, category.id ] }
+
+    @category_selection_list = []
+
+    if  !Category.all.empty?
+      @category_selection_list = Category.all.collect {|category| [ category.name, category.id ] }
+
+    end
+
   end
 
   # GET /aims/1/edit

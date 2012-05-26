@@ -1,4 +1,10 @@
 BodykitMe::Application.routes.draw do
+  resources :user_sessions
+
+  resources :users
+  get "login" => "user_sessions#new"
+  get "logout" => "user_sessions#destroy"
+
   resources :workout_sessions do
     member do
       post 'show'
