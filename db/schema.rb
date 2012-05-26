@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120526152623) do
+ActiveRecord::Schema.define(:version => 20120526182614) do
+
+  create_table "addresses", :force => true do |t|
+    t.string   "street"
+    t.string   "zip"
+    t.integer  "country_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "aims", :force => true do |t|
     t.string   "name"
@@ -26,6 +34,13 @@ ActiveRecord::Schema.define(:version => 20120526152623) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "unit_id"
+  end
+
+  create_table "countries", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "exercises", :force => true do |t|
@@ -76,8 +91,14 @@ ActiveRecord::Schema.define(:version => 20120526152623) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.string   "surname"
+    t.string   "forename"
+    t.date     "date_of_birth"
+    t.string   "gender"
+    t.boolean  "enabled",             :default => true
+    t.integer  "address_id"
   end
 
   create_table "workout_days", :force => true do |t|

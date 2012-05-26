@@ -27,6 +27,26 @@
       <%= f.label :password_confirmation %><br />
       <%= f.password_field :password_confirmation %>
   </div>
+
+  <hr/>
+  <div class="field">
+      <%= f.label :forename %><br />
+      <%= f.text_field :forename %>
+  </div>
+  <div class="field">
+      <%= f.label :surname %><br />
+      <%= f.text_field :surname %>
+  </div>
+  <div class="field">
+      <%= f.label :date_of_birth %><br />
+      <%= f.text_field :date_of_birth %>
+  </div>
+  <div class="field">
+      <%= f.label :gender %><br />
+      <%= f.text_field :gender %>
+  </div>
+    <hr/>
+
   <div class="actions">
     <%= f.submit %>
   </div>

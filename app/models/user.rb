@@ -3,5 +3,6 @@ class User < ActiveRecord::Base
     #	Add	custom	conﬁguration	options	here
     #conﬁg.crypto_provider = Authlogic::CryptoProviders::MD5
     config.crypto_provider = Authlogic::CryptoProviders::MD5
+    belongs_to :address
   end
 end

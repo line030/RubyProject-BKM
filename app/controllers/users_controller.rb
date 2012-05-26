@@ -46,6 +46,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
+    #createn einer leeren Address
+    @address = Address.create
+    @user.address = @address
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -63,7 +67,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if (@user.update_attributes(params[:user]) &&  @user.address.update_attributes(params[:address]))
+
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else

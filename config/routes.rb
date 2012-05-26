@@ -1,4 +1,12 @@
 BodykitMe::Application.routes.draw do
+  resources :countries
+
+  resources :addresses do
+  member do
+      get "user"
+    end
+  end
+
   resources :user_sessions
 
   resources :users
