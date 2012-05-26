@@ -7,18 +7,45 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="loginBox">
-  <% if current_user %>
-      Welcome, <%= current_user.login %>! |
-      <%= link_to "Edit profile", edit_user_path(current_user)  %> | 
-      <%=  link_to "Logout", logout_path %>
-  <% else %>
-      <%= link_to "regiter", new_user_path %> |
-      <%= link_to "Login", login_path %>
-  <% end %>
-</div>
+<div id="main">
+  <div id="header">
+    <div id="top">
+      <div id="teaser">
+        <h1>Bodykit.Me</h1>
+      </div>
+      <div id="loginBox">
+        <% if current_user %>
+            Welcome, <%= current_user.login %>! |
+            <%= link_to "Edit profile", edit_user_path(current_user)  %> | 
+            <%=  link_to "Logout", logout_path %>
+        <% else %>
+            <%= link_to "Register", new_user_path %> |
+            <%= link_to "Login", login_path %>
+        <% end %>
+      </div>
+    </div>
+    <% if current_user %>
+        <div id="navi">
+          <ul>
+            <li class="first"><%= link_to "Dashboard", url_for(:action => 'index', :controller => 'member_area')%></li>
+            <li><%= link_to "Logged Workouts", workout_sessions_path%></li>
+            <li><%= link_to "My Workout Plans", workout_plans_path%></li>
+            <li><%= link_to "My Aims", aims_path%></li>
+            <li class="last"><%= link_to "Exercises", exercises_path%></li>
+            <div class="clearFix"></div>
+          </ul>
+        </div>
+    <% end %>
+  </div>
+  <div id="content">
 
-<%= yield %>
+    <%= yield %>
+
+  </div>
+  <div id="footer">
+    FOOTER
+  </div>
+</div>
 
 </body>
 </html>

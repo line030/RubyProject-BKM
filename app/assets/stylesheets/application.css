@@ -11,10 +11,91 @@
  *= require_self
  *= require_tree .
 */
+@import "reset.css";
 
-#loginBox {
+body {
+    font-family: verdana;
+    font-size:13px;
+}
+
+#main {
+    position:relative;
+    width:800px;
+    margin:0 auto;
+}
+
+#header {
+    position:relative;
+    width:100%;
+}
+
+#top {
+    position:relative;
+    width:100%;
+    height:50px;
+}
+
+#top #teaser{
     position:absolute;
-    top:0px;
+    bottom:0px;
+    left:0px;
+}
+#top #teaser h1 {
+    font-size: 32px;
+    line-height:32px;
+}
+
+#top #loginBox {
+    position:absolute;
+    bottom:0px;
     right:0px;
-    padding-top:10px;
+}
+
+#header #banner {
+    position:relative;
+    width:100%;
+    height:200px;
+    background: #cccccc;
+    border-radius: 20px;
+    margin-top:10px;
+}
+
+#header #navi {
+    width:100%;
+    margin-top:10px;
+}
+
+#header #navi ul {
+    list-style: none;
+    line-height:26px;
+}
+#header #navi ul li {
+    float:left;
+    margin:0 10px;
+}
+#header #navi ul li.first {
+    margin-left:0;
+}
+#header #navi ul li.last {
+    margin-right:0;
+}
+
+#header #navi ul li a{
+    height:20px;
+    padding:5px 10px;
+    background: orange;
+}
+
+#content {
+    padding:20px 0;
+}
+
+#footer {
+    padding:10px 0;
+    background: #cccccc;
+}
+
+
+.clearFix {
+    clear:both;
 }
