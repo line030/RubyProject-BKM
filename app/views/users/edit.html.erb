@@ -20,12 +20,58 @@
       <%= f.text_field :login %>
     </div>
 
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </div>
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password %>
+    </div>
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <hr/>
+    <div class="field">
+      <%= f.label :forename %><br />
+      <%= f.text_field :forename %>
+    </div>
+    <div class="field">
+      <%= f.label :surname %><br />
+      <%= f.text_field :surname %>
+    </div>
+    <div class="field">
+      <%= f.label :date_of_birth %><br />
+      <%= f.text_field :date_of_birth %>
+    </div>
+    <div class="field">
+      <%= f.label :gender %><br />
+      <%= f.text_field :gender %>
+    </div>
+    <hr/>
+    <h3>Address</h3>
     <%= fields_for @user.address do |i| %>
-        <p>
-              <p>Deniz</p>
-          <%= i.label :street %>
+        <div class="field">
+          <%= i.label :street %> <br />
           <%= i.text_field :street %>
-        </p>
+        </div>
+
+        <div class="field">
+          <%= i.label :zip %><br />
+          <%= i.text_field :zip %>
+        </div>
+
+        <div class="field">
+          <%= i.label :city %><br />
+          <%= i.text_field :city %>
+        </div>
+        <div class="field">
+          <%= i.label :country_id %><br />
+          <%= i.select :country_id, @country_selection_list, {:prompt => "Select Country"}
+
+          %>
+        </div>
 
     <% end %>
 

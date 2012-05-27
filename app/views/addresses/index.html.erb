@@ -4,6 +4,7 @@
   <tr>
     <th>Street</th>
     <th>Zip</th>
+    <th>City</th>
     <th>Country</th>
     <th></th>
     <th></th>
@@ -14,6 +15,7 @@
   <tr>
     <td><%= address.street %></td>
     <td><%= address.zip %></td>
+    <td><%= address.city %>  </td>
     <td><%= @countries[address.id] %></td>
     <td><%= link_to 'Show', address %></td>
     <td><%= link_to 'Edit', edit_address_path(address) %></td>
