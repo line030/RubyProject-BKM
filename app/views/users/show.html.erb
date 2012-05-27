@@ -70,6 +70,18 @@
   <%= @user.last_login_ip %>
 </p>
 
+</hr>
+
+<p>
+  <b>Workout Plans:</b><br />
+  <% @workout_plans.each do |e| %>
+    <hr/>
+    <%= link_to e.name, e %>  <br />
+    Name: <%= e.name %><br/>
+<%
+   end
+%>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

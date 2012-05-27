@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
     config.crypto_provider = Authlogic::CryptoProviders::MD5
 
     belongs_to :address
+    has_and_belongs_to_many :workout_plans
     has_many :workout_sessions
     has_many :aims
   end

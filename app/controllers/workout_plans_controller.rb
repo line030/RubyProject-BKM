@@ -5,8 +5,18 @@ class WorkoutPlansController < ApplicationController
   # GET /workout_plans
   # GET /workout_plans.json
   def index
-    @workout_plans = WorkoutPlan.all
-      respond_to do |format|
+    #@workout_plans = WorkoutPlan.joins(:users).where()
+    #@workout_plans = WorkoutPlan.conditions(:users => {:user_id => current_user.id})
+    #peter = @workout_plans.users_workout_plans
+    userK = User.find(current_user.id)
+    @workout_plans = userK.workout_plans
+
+    #render :text =>  @workout_plans.size, :layout => false
+    #return
+
+    #peter.find_by_user_id(current_user.id)
+
+    respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @workout_plans }
     end
@@ -74,7 +84,7 @@ class WorkoutPlansController < ApplicationController
   # POST /workout_plans.json
   def create
     @workout_plan = WorkoutPlan.new(params[:workout_plan])
-
+    @workout_plan.users << current_user
     respond_to do |format|
       if @workout_plan.save
         format.html { redirect_to @workout_plan, notice: 'Workout plan was successfully created.' }

@@ -20,6 +20,10 @@
     <%= f.text_field :zip %>
   </div>
   <div class="field">
+      <%= f.label :city %><br />
+      <%= f.text_field :city %>
+  </div>
+  <div class="field">
     <%= f.label :country_id %><br />
     <%= select("address", "country_id", @country_selection_list,
                {:prompt =>  "Select Country"  } ) %>
