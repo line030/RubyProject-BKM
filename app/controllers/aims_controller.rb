@@ -5,7 +5,7 @@ class AimsController < ApplicationController
   # GET /aims
   # GET /aims.json
   def index
-    @aims = Aim.all
+    @aims = Aim.find_all_by_user_id(current_user.id)
 
     category = @aims.collect { | e |
       e.category ? [e.id, e.category.name] : [e.id, "no Category specified"]
@@ -22,6 +22,11 @@ class AimsController < ApplicationController
   # GET /aims/1.json
   def show
     @aim = Aim.find(params[:id])
+    if !user_is_allowed?(@aim)
+      redirect_to aims_path
+      return
+    end
+
     @category = @aim.category
 
     respond_to do |format|
@@ -34,7 +39,7 @@ class AimsController < ApplicationController
   # GET /aims/new.json
   def new
     @aim = Aim.new
-   # @category_selection_list = []
+
     assign_category_selection_list
 
     respond_to do |format|
@@ -57,6 +62,11 @@ class AimsController < ApplicationController
   # GET /aims/1/edit
   def edit
     @aim = Aim.find(params[:id])
+    if !user_is_allowed?(@aim)
+      redirect_to aims_path
+      return
+    end
+
     assign_category_selection_list
   end
 
@@ -64,6 +74,7 @@ class AimsController < ApplicationController
   # POST /aims.json
   def create
     @aim = Aim.new(params[:aim])
+    @aim.user = current_user
 
     respond_to do |format|
       if @aim.save
@@ -80,6 +91,10 @@ class AimsController < ApplicationController
   # PUT /aims/1.json
   def update
     @aim = Aim.find(params[:id])
+    if !user_is_allowed?(@aim)
+      redirect_to aims_path
+      return
+    end
 
     respond_to do |format|
       if @aim.update_attributes(params[:aim])
@@ -96,11 +111,23 @@ class AimsController < ApplicationController
   # DELETE /aims/1.json
   def destroy
     @aim = Aim.find(params[:id])
+    if !user_is_allowed?(@aim)
+      redirect_to aims_path
+      return
+    end
     @aim.destroy
 
     respond_to do |format|
       format.html { redirect_to aims_url }
       format.json { head :no_content }
+    end
+  end
+
+  def user_is_allowed?(aim)
+    if aim.user_id.equal?(current_user.id)
+      return true
+    else
+      return false
     end
   end
 end

@@ -1,5 +1,4 @@
 class WorkoutSessionsController < ApplicationController
-
   before_filter :authenticate
 
   def assign_workout_days_selection_list
@@ -11,7 +10,7 @@ class WorkoutSessionsController < ApplicationController
   # GET /workout_sessions
   # GET /workout_sessions.json
   def index
-    @workout_sessions = WorkoutSession.all
+    @workout_sessions = WorkoutSession.find_all_by_user_id(current_user.id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -23,6 +22,12 @@ class WorkoutSessionsController < ApplicationController
   # GET /workout_sessions/1.json
   def show
     @workout_session = WorkoutSession.find(params[:id])
+    if !user_is_allowed?(@workout_session)
+      redirect_to workout_sessions_path
+      return
+    end
+
+
     exerciseWorkoutThrills = @workout_session.exercises_workout_thrills
 
     #if post, then update the workout details
@@ -34,8 +39,6 @@ class WorkoutSessionsController < ApplicationController
         flash[:notice] = "Activity logged"
       end
 
-     # render :text =>  joinedExercise.save, :layout => false
-     # return
     end
 
     if @workout_session.workout_day.nil?
@@ -72,6 +75,11 @@ class WorkoutSessionsController < ApplicationController
   # GET /workout_sessions/1/edit
   def edit
     @workout_session = WorkoutSession.find(params[:id])
+    if !user_is_allowed?(@workout_session)
+      redirect_to workout_sessions_path
+      return
+    end
+
     assign_workout_days_selection_list
   end
 
@@ -79,6 +87,7 @@ class WorkoutSessionsController < ApplicationController
   # POST /workout_sessions.json
   def create
     @workout_session = WorkoutSession.new(params[:workout_session])
+    @workout_session.user = current_user
 
     workout_day_id = params[:workout_day][:id]    # fehler :(
 
@@ -111,6 +120,10 @@ class WorkoutSessionsController < ApplicationController
   # PUT /workout_sessions/1.json
   def update
     @workout_session = WorkoutSession.find(params[:id])
+    if !user_is_allowed?(@workout_session)
+      redirect_to workout_sessions_path
+      return
+    end
 
     respond_to do |format|
       if @workout_session.update_attributes(params[:workout_session])
@@ -127,11 +140,23 @@ class WorkoutSessionsController < ApplicationController
   # DELETE /workout_sessions/1.json
   def destroy
     @workout_session = WorkoutSession.find(params[:id])
+    if !user_is_allowed?(@workout_session)
+      redirect_to workout_sessions_path
+      return
+    end
     @workout_session.destroy
 
     respond_to do |format|
       format.html { redirect_to workout_sessions_url }
       format.json { head :no_content }
+    end
+  end
+
+  def user_is_allowed?(workout_session)
+    if workout_session.user_id.equal?(current_user.id)
+      return true
+    else
+      return false
     end
   end
 end
