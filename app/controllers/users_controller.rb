@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   # make session if not authenticated ?
   skip_before_filter :authenticate, :only => [:new,:create, :index]
 
+
+
   # GET /users
   # GET /users.json
   def index
@@ -50,6 +52,9 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     assign_country_selection_list
+
+    # handling of the radio button
+
   end
 
   def assign_country_selection_list
@@ -62,9 +67,14 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
+    @user.gender = params[:gender]
+
     #createn einer leeren Address
     @address = Address.create
     @user.address = @address
+
+    #render :text => params[:gender] , :layout => false
+    #return
 
     respond_to do |format|
       if @user.save
@@ -81,6 +91,10 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+
+    #render :text => params[:gender] , :layout => false
+    #return
+    @user.gender = params[:gender]
 
     respond_to do |format|
       if (@user.update_attributes(params[:user]) &&  @user.address.update_attributes(params[:address]))
@@ -101,7 +115,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url }
+      format.html { redirect_to "/" }
       format.json { head :no_content }
     end
   end

@@ -45,10 +45,19 @@
       <%= f.label :date_of_birth %><br />
       <%= f.text_field :date_of_birth %>
     </div>
-    <div class="field">
-      <%= f.label :gender %><br />
-      <%= f.text_field :gender %>
+    <div>
+    <%= f.radio_button :gender, "male" %>
+      <b>male</b>
+    <%= f.radio_button :gender, "female" %>
+      <b>female</b>
     </div>
+      <!--<div>
+      <input id="gender_male" name="gender" type="radio" value="MALE" checked=@checked />
+      <b>male</b>
+        <input id="gender_female" name="gender" type="radio" value="FEMALE"=@checked />
+      <b>female</b>
+    </div>-->
+
     <hr/>
     <h3>Address</h3>
     <%= fields_for @user.address do |i| %>
@@ -80,6 +89,28 @@
     </div>
 <% end %>
 
+<%= button_to('Destroy', @user, :confirm => 'Are you sure?',:method => "delete") %>
+
 
 <%= link_to 'Show', @user %> |
 <%= link_to 'Back', users_path %>
+
+<script type="text/javascript">
+
+  /*$(document).ready(function(){
+
+      $(document).ready(function () {
+          $("#edit_user_12").validate({
+              onchange:  true,
+              rules: {
+                  "user[login]": {required: true, minlength: 0}
+              }
+          });
+
+      });
+
+  });
+  */
+
+
+</script>
