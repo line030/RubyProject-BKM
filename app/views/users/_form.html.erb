@@ -41,9 +41,15 @@
       <%= f.label :date_of_birth %><br />
       <%= f.text_field :date_of_birth %>
   </div>
-  <div class="field">
-      <%= f.label :gender %><br />
-      <%= f.text_field :gender %>
+  <div>
+      <div style="float: left"><%= f.radio_button :gender, "male" %>
+        <b>male</b>
+      </div>
+
+      <div style="float: left"><%= f.radio_button :gender, "female" %>
+        <b>female</b>
+      </div>
+      <div class="clearFix"></div>
   </div>
     <hr/>
 
