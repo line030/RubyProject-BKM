@@ -21,8 +21,6 @@ class UsersController < ApplicationController
 
     @workout_plans = @user.workout_plans
 
-    assign_workout_plans_selection_list
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -49,12 +47,10 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-    assign_country_selection_list
   end
 
-  def assign_country_selection_list
-
-    @country_selection_list = Country.all.collect {|country| [ country.name, country.id ] }
+  def get_country_selection_list
+    Country.all.collect {|country| [ country.name, country.id ] }
   end
 
   # POST /users

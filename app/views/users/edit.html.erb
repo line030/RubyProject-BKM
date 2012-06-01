@@ -68,9 +68,7 @@
         </div>
         <div class="field">
           <%= i.label :country_id %><br />
-          <%= i.select :country_id, @country_selection_list, {:prompt => "Select Country"}
-
-          %>
+          <%= i.select :country_id, @_controller.get_country_selection_list, {:prompt => "Select Country"} %>
         </div>
 
     <% end %>

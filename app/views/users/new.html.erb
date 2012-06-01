@@ -3,3 +3,14 @@
 <%= render 'form' %>
 
 <%= link_to 'Back', users_path %>
+
+<script type="text/javascript">
+  $(function () {
+      $("#user_date_of_birth").datepicker({
+          yearRange: '-60Y:-14Y',
+          changeYear : true,
+          changeMonth: true,
+          dateFormat : 'dd.mm.yy'
+      })
+  })
+</script>
