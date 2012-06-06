@@ -134,7 +134,8 @@
                       required: function(element) {
                           return $("#user_password").val().length > 0;
                       },
-                      optionalPasswordEquals: true
+                      optionalPasswordEquals: true,
+                      minlength: 4
                   },
                   "user[email]": {
                       required: true,

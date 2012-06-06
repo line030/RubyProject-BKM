@@ -25,11 +25,13 @@
                     }
                 },
                 "user[password]": {
-                    required: true
+                    required: true,
+                    minlength: 4
                 },
                 "user[password_confirmation]": {
                     required: true,
-                    equalTo: "#user_password"
+                    equalTo: "#user_password",
+                    minlength: 4
                 },
                 "user[email]": {
                     required: true,
