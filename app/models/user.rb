@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-
-  validates_length_of :surname , :minimum=>4
+  validates_presence_of :forename
+  validates_presence_of :surname
+  validates_presence_of :date_of_birth
   validates :gender , :presence=>true
 
   acts_as_authentic do |config|

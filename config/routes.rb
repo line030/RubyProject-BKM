@@ -1,4 +1,5 @@
 BodykitMe::Application.routes.draw do
+
   resources :countries
 
   resources :addresses do
@@ -9,10 +10,17 @@ BodykitMe::Application.routes.draw do
 
   resources :user_sessions
 
-  resources :users
+  resources :users do
+    collection do
+      post "check_username"
+      post "check_email"
+    end
+  end
   get "login" => "user_sessions#new"
   get "logout" => "user_sessions#destroy"
   get "register" => "users#new"
+
+
 
   resources :workout_sessions do
     member do
@@ -44,6 +52,8 @@ BodykitMe::Application.routes.draw do
   resources :exercises
 
   resources :member_area
+
+  get "dashboard" => "member_area#index"
 
   #get "member_area" => "member_area#index"
 

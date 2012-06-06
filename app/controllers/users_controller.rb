@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
   # make session if not authenticated ?
-  skip_before_filter :authenticate, :only => [:new,:create, :index]
+  before_filter :authenticate
+  skip_before_filter :authenticate, :only => [:new,:create,:check_email,:check_username]
 
   # GET /users
   # GET /users.json
@@ -58,18 +59,18 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    @user.gender = params[:gender]
+    #@user.gender = params[:gender]
 
     #createn einer leeren Address
     @address = Address.create
     @user.address = @address
 
-    #render :text => params[:gender] , :layout => false
+    #render :text => @user.gender , :layout => false
     #return
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to dashboard_path, notice: 'Welcome to Bodykit.Me!' }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -83,14 +84,10 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    #render :text => params[:gender] , :layout => false
-    #return
-    @user.gender = params[:gender]
-
     respond_to do |format|
       if (@user.update_attributes(params[:user]) &&  @user.address.update_attributes(params[:address]))
 
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to edit_user_path, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -108,6 +105,28 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to "/" }
       format.json { head :no_content }
+    end
+  end
+
+  # TODO: CSRXF-Attacks
+  # POST /users/check_email
+  def check_username
+    @user = User.find_by_login(params[:user][:login])
+
+    respond_to do | format |
+      format.json { render :json => !@user}
+    end
+  end
+
+  # TODO: CSRXF-Attacks
+  # POST /users/check_email
+  def check_email
+    #render :text => "hallo" , :layout => false
+    #return
+    @user = User.find_by_email(params[:user][:email])
+
+    respond_to do | format |
+      format.json { render :json => !@user}
     end
   end
 end

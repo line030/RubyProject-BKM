@@ -5,12 +5,67 @@
 <%= link_to 'Back', users_path %>
 
 <script type="text/javascript">
-  $(function () {
-      $("#user_date_of_birth").datepicker({
-          yearRange: '-60Y:-14Y',
-          changeYear : true,
-          changeMonth: true,
-          dateFormat : 'dd.mm.yy'
-      })
-  })
+    $(document).ready(function () {
+          $("#user_date_of_birth").datepicker({
+              yearRange: '-60Y:-14Y',
+              changeYear : true,
+              changeMonth: true,
+              dateFormat : 'dd.mm.yy'
+          }) ;
+
+        $("#new_user").validate({
+            onchange:  true,
+            rules: {
+                "user[login]": {
+                    required: true,
+                    minlength: 4,
+                    remote: {
+                        url: "/users/check_username",
+                        type: "post"
+                    }
+                },
+                "user[password]": {
+                    required: true
+                },
+                "user[password_confirmation]": {
+                    required: true,
+                    equalTo: "#user_password"
+                },
+                "user[email]": {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: "/users/check_email",
+                        type: "post"
+                    }
+                },
+                "user[forename]": {
+                    required: true
+                },
+                "user[surname]": {
+                    required: true
+                },
+                "user[date_of_birth]": {
+                    required: true
+                },
+                "user[gender]": {
+                    required: true
+                }
+            } ,
+            messages: {
+                "user[login]": {
+                    required: $.validator.messages.required,
+                    minlength: jQuery.format("At least {0} characters required!"),
+                    remote: "Login already taken"
+                },
+                "user[email]": {
+                    required: $.validator.messages.required,
+                    email: $.validator.messages.email,
+                    remote: "E-Mail already taken"
+                }
+            }
+
+        });
+
+    })
 </script>
