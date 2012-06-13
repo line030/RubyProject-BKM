@@ -14,5 +14,6 @@ class User < ActiveRecord::Base
     has_and_belongs_to_many :workout_plans
     has_many :workout_sessions
     has_many :aims
+    has_many :exercises
   end
 end

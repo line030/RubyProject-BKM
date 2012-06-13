@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120526233518) do
+ActiveRecord::Schema.define(:version => 20120611193247) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -50,9 +50,11 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
     t.text     "description"
     t.string   "picture"
     t.integer  "points"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "unit_id"
+    t.boolean  "is_global",   :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "exercises_workout_days", :id => false, :force => true do |t|
@@ -110,15 +112,17 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
 
   create_table "workout_days", :force => true do |t|
     t.string   "day"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "workout_plan_id"
+    t.boolean  "is_global",       :default => false, :null => false
   end
 
   create_table "workout_plans", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_global",  :default => false, :null => false
   end
 
   create_table "workout_sessions", :force => true do |t|
