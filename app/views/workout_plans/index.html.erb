@@ -20,4 +20,26 @@
 
 <br />
 
+<hr />
+<h2>Global WorkoutPlan templates:</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @global_workout_plans.each do |workout_plan| %>
+      <tr>
+        <td><%= workout_plan.name %></td>
+        <td><%= link_to 'Show', read_only_workout_plan_path(workout_plan) %></td>
+        <td></td>
+        <td></td>
+      </tr>
+  <% end %>
+</table>
+
+<hr/>
+
 <%= link_to 'New Workout plan', new_workout_plan_path %>

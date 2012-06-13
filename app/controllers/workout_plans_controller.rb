@@ -8,8 +8,10 @@ class WorkoutPlansController < ApplicationController
     #@workout_plans = WorkoutPlan.joins(:users).where()
     #@workout_plans = WorkoutPlan.conditions(:users => {:user_id => current_user.id})
     #peter = @workout_plans.users_workout_plans
-    userK = User.find(current_user.id)
-    @workout_plans = userK.workout_plans
+    #userK = User.find(current_user.id)
+    @workout_plans = WorkoutPlan.find_all_by_user_id(current_user.id)
+
+    @global_workout_plans = WorkoutPlan.find_all_by_is_global(true)
 
     #render :text =>  @workout_plans.size, :layout => false
     #return
@@ -31,10 +33,21 @@ class WorkoutPlansController < ApplicationController
 
     @workout_day = WorkoutDay.new
 
-    assign_workout_selection_list
+    assign_workout_selection_lists
 
     respond_to do |format|
       format.html # show.html.erb
+      format.json { render json: @workout_plan }
+    end
+  end
+
+  # GET /workout_plans/1/read_only
+  def read_only
+    @workout_plan = WorkoutPlan.find(params[:id])
+    @workout_days = @workout_plan.workout_days
+
+    respond_to do |format|
+      format.html # read_only.html.erb
       format.json { render json: @workout_plan }
     end
   end
@@ -59,9 +72,24 @@ class WorkoutPlansController < ApplicationController
     end
   end
 
-  def assign_workout_selection_list
+  #POST /workout_plans/1/add_tag
+  def add_tag
+    @workout_plan = WorkoutPlan.find(params[:id])
+    tag = Tag.create(:name => params[:tag][:name])
+    @workout_plan.tags << tag
 
-    @workout_day_selection_list = WorkoutDay.all.collect {|work| [ work.day, work.id ] }
+    @workout_plan.save
+
+    respond_to do |format|
+      format.html { redirect_to @workout_plan, notice: 'Successfully tagged' }
+    end
+  end
+
+  def assign_workout_selection_lists
+
+    @global_workout_day_selection_list = WorkoutDay.find_all_by_is_global(true).collect {|work| [ work.day, work.id ] }
+    @workout_day_selection_list = WorkoutDay.find_all_by_user_id(current_user.id).collect {|work| [ work.day, work.id ] }
+
   end
 
   # GET /workout_plans/new
@@ -84,7 +112,8 @@ class WorkoutPlansController < ApplicationController
   # POST /workout_plans.json
   def create
     @workout_plan = WorkoutPlan.new(params[:workout_plan])
-    @workout_plan.users << current_user
+    @workout_plan.user_id = current_user.id
+
     respond_to do |format|
       if @workout_plan.save
         format.html { redirect_to @workout_plan, notice: 'Workout plan was successfully created.' }
@@ -92,6 +121,28 @@ class WorkoutPlansController < ApplicationController
       else
         format.html { render action: "new" }
         format.json { render json: @workout_plan.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /workout_plans/1/copy
+  def copy
+    @workout_plan = WorkoutPlan.find(params[:id])
+    @copy = WorkoutPlan.new(:name => @workout_plan.name + " [copy]")
+    @copy.user_id = current_user.id
+
+    @workout_plan.workout_days.each do |day|
+      workoutDay = WorkoutDay.create(:day => day.day)
+      workoutDay.exercises = day.exercises
+      @copy.workout_days << workoutDay
+    end
+    respond_to do |format|
+      if @copy.save
+        format.html { redirect_to workout_plans_path, notice: 'Workout plan was successfully copied.' }
+        format.json { render json: @copy, status: :created, location: @copy }
+      else
+        format.html { render action: "copy" }
+        format.json { render json: @copy.errors, status: :unprocessable_entity }
       end
     end
   end
