@@ -38,13 +38,18 @@ BodykitMe::Application.routes.draw do
     member do
       post 'click'
       post 'addWorkOut'
+      post 'add_tag'
+      post 'copy'
+      get 'read_only'
     end
 
   end
 
   resources :workout_days do
     member do
-      post 'addExercise'
+      post 'addExistingExercise'
+      post 'add_new_exercise'
+      post 'add_tag'
     end
 
   end

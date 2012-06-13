@@ -1,4 +1,6 @@
-<h1>Listing exercises</h1>
+<h1>Listing exercises </h1>
+<hr/>
+<h2>Global</h2>
 
 <table>
   <tr>
@@ -12,18 +14,46 @@
     <th></th>
   </tr>
 
-<% @exercises.each do |exercise| %>
+<% @exercisesGlobal.each do |exercise| %>
   <tr>
     <td><%= exercise.name %></td>
     <td><%= exercise.description %></td>
     <td><%= exercise.picture %></td>
     <td><%= exercise.points %></td>
-    <td><%= @units[exercise.id] %></td>
+    <td><%= @unitGlobal[exercise.id] %></td>
     <td><%= link_to 'Show', exercise %></td>
     <td><%= link_to 'Edit', edit_exercise_path(exercise) %></td>
     <td><%= link_to 'Destroy', exercise, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
+</table>
+ <hr/>
+<h2>Your own Exercises</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Picture</th>
+    <th>Points</th>
+    <th>Unit</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @exercisesByUser.each do |exercise| %>
+      <tr>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.description %></td>
+        <td><%= exercise.picture %></td>
+        <td><%= exercise.points %></td>
+        <td><%= @unitByUser[exercise.id] %></td>
+        <td><%= link_to 'Show', exercise %></td>
+        <td><%= link_to 'Edit', edit_exercise_path(exercise) %></td>
+        <td><%= link_to 'Destroy', exercise, confirm: 'Are you sure?', method: :delete %></td>
+      </tr>
+  <% end %>
 </table>
 
 <br />

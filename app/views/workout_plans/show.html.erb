@@ -45,11 +45,36 @@
 
 <hr/>
 
-<strong>Add existing Training Days: </strong><br />
+<strong>Add existing Global Training Days: </strong><br />
 
-<%= form_tag addWorkOut_workout_plan_path %>
-<%= select("workout_day", "id", @workout_day_selection_list , {:prompt => "Select a Traing Day"}) %>
+<%= form_tag addWorkOut_workout_plan_path do %>
+<%= select("workout_day", "id", @global_workout_day_selection_list , {:prompt => "Select a Traning Day"}) %>
 <%= submit_tag 'add' %>
+<% end %>
+
+<hr/>
+
+<strong>Add existing Own Training Days: </strong><br />
+
+<%= form_tag addWorkOut_workout_plan_path do %>
+<%= select("workout_day", "id", @workout_day_selection_list , {:prompt => "Select a Traning Day"}) %>
+<%= submit_tag 'add' %>
+<% end %>
+
+<hr/>
+<p>Tags:</p>
+<p>
+  <% @workout_plan.tags.each do |t| %>
+      <%= t.name %>
+  <% end %>
+</p>
+<p>
+  Add:
+  <%= form_tag add_tag_workout_plan_path do %>
+      <%= text_field "tag", "name" %>
+      <%= submit_tag 'add' %>
+  <% end %>
+</p>
 
 <hr/>
 <%= link_to 'Edit', edit_workout_plan_path(@workout_plan) %> |

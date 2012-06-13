@@ -5,16 +5,22 @@ class ExercisesController < ApplicationController
   # GET /exercises
   # GET /exercises.json
   def index
-    @exercises = Exercise.all
+    @exercisesGlobal = Exercise.find_all_by_is_global(true)
+    @exercisesByUser = Exercise.find_all_by_user_id(current_user.id)
 
-    unit = @exercises.collect { | e |
+    unitGlobal = @exercisesGlobal.collect { | e |
       e.unit ? [e.id, e.unit.name] : [e.id, "no Unit specified"]
     }
-    @units = Hash[*(unit.flatten)]
+    @unitGlobal = Hash[*(unitGlobal.flatten)]
+
+    unitByUser = @exercisesByUser.collect { | e |
+      e.unit ? [e.id, e.unit.name] : [e.id, "no Unit specified"]
+    }
+    @unitByUser = Hash[*(unitByUser.flatten)]
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @exercises }
+      format.json { render json: @exercisesGlobal }
     end
   end
 
@@ -57,6 +63,7 @@ class ExercisesController < ApplicationController
   # POST /exercises.json
   def create
     @exercise = Exercise.new(params[:exercise])
+    @exercise.user_id = current_user.id
 
     respond_to do |format|
       if @exercise.save

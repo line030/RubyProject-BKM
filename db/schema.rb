@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611193247) do
+ActiveRecord::Schema.define(:version => 20120613150646) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -69,6 +69,14 @@ ActiveRecord::Schema.define(:version => 20120611193247) do
     t.decimal "value",              :precision => 8, :scale => 2
   end
 
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "units", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -105,17 +113,13 @@ ActiveRecord::Schema.define(:version => 20120611193247) do
     t.integer  "address_id"
   end
 
-  create_table "users_workout_plans", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "workout_plan_id"
-  end
-
   create_table "workout_days", :force => true do |t|
     t.string   "day"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.integer  "workout_plan_id"
     t.boolean  "is_global",       :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "workout_plans", :force => true do |t|
@@ -123,6 +127,7 @@ ActiveRecord::Schema.define(:version => 20120611193247) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "is_global",  :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "workout_sessions", :force => true do |t|

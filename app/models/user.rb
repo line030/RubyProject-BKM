@@ -11,9 +11,10 @@ class User < ActiveRecord::Base
 
 
     belongs_to :address
-    has_and_belongs_to_many :workout_plans
+    has_many :workout_plans
     has_many :workout_sessions
     has_many :aims
     has_many :exercises
+    has_many :workout_days
   end
 end

@@ -1,5 +1,6 @@
 class WorkoutPlan < ActiveRecord::Base
+    has_many :tags, :as => :taggable
     has_many :workout_days
-    has_and_belongs_to_many :users
+    belongs_to :user
 
 end
