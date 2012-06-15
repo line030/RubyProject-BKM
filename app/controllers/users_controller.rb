@@ -57,6 +57,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    if params[:user][:password].nil?
+      params[:user][:password] = "password"
+      params[:user][:password_confirmation] = "password"
+    end
+
     @user = User.new(params[:user])
 
     #@user.gender = params[:gender]

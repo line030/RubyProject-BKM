@@ -10,44 +10,76 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="main">
-  <div id="header">
-    <div id="top">
-      <div id="teaser">
-        <h1>Bodykit.Me</h1>
-      </div>
-      <div id="loginBox">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="/dashboard" style="color:white">Bodykit.Me</a>
+      <ul class="nav">
         <% if current_user %>
-            Welcome, <%= current_user.login %>! |
-            <%= link_to "Edit profile", edit_user_path(current_user)  %> | 
-            <%=  link_to "Logout", logout_path %>
-        <% else %>
-            <%= link_to "Register", new_user_path %> |
-            <%= link_to "Login", login_path %>
+            <li class="active">
+              <%= link_to "Dashboard", url_for(:action => 'index', :controller => 'member_area')%>
+            </li>
+            <li>
+              <%= link_to "Logged Workouts", workout_sessions_path%>
+            </li>
+            <li>
+              <%= link_to "My Workout Plans", workout_plans_path%>
+            </li>
+            <li>
+              <%= link_to "My Aims", aims_path%>
+            </li>
+            <li>
+              <%= link_to "Exercises", exercises_path%>
+            </li>
         <% end %>
-      </div>
+      </ul>
+      <ul class="nav pull-right">
+        <% if current_user %>
+            <li>
+              <%=  link_to "Logout", logout_path %>
+            </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+              <a href="#"
+                 class="dropdown-toggle"
+                 data-toggle="dropdown">
+               <i class="icon-cog icon-white"></i>
+               <%= current_user.login %>
+               <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li>
+                  <%= link_to "Edit profile", edit_user_path(current_user)  %>
+                </li>
+              </ul>
+            </li>
+        <% else %>
+            <li>
+              <%=  link_to "Register", new_user_path %>
+            </li>
+            <li>
+              <%= link_to "Login", login_path %>
+            </li>
+        <% end %>
+      </ul>
     </div>
-    <% if current_user %>
-        <div id="navi">
-          <ul>
-            <li class="first"><%= link_to "Dashboard", url_for(:action => 'index', :controller => 'member_area')%></li>
-            <li><%= link_to "Logged Workouts", workout_sessions_path%></li>
-            <li><%= link_to "My Workout Plans", workout_plans_path%></li>
-            <li><%= link_to "My Aims", aims_path%></li>
-            <li class="last"><%= link_to "Exercises", exercises_path%></li>
-            <div class="clearFix"></div>
-          </ul>
-        </div>
-    <% end %>
   </div>
+</div>
+<div class="container" style="margin-top:50px;">
+
   <div id="content">
 
     <%= yield %>
 
   </div>
-  <div id="footer">
-    FOOTER
-  </div>
+  <footer style="text-align:center">
+    <hr/>
+    <span style="letter-spacing: 2em;">
+      <img src="<%= image_path "berlin-flag.png" %>" style="padding-bottom:4px;vertical-align: middle">
+        MADE IN BERLIN
+      <img src="<%= image_path "germany-flag.jpeg" %>" style="padding-bottom:4px;vertical-align: middle">
+    </span>
+  </footer>
 </div>
 
 </body>

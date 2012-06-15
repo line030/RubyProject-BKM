@@ -18,6 +18,8 @@ class UserSessionsController < ApplicationController
   # POST /user_sessions.json
   def create
     @user_session = UserSession.new(params[:user_session])
+    #render :text => params, :layout => false
+    #return
 
     respond_to do |format|
       if @user_session.save
