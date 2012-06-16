@@ -1,10 +1,14 @@
 BodykitMe::Application.routes.draw do
 
+  root :to => 'public#index'
+  
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   resources :countries
+
+  resources :public
 
   resources :addresses do
   member do

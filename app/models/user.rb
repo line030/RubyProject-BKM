@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
-  validates_presence_of :forename
-  validates_presence_of :surname
-  validates_presence_of :date_of_birth
-  validates :gender , :presence=>true
+  #validates_presence_of :forename
+  #validates_presence_of :surname
+  #validates_presence_of :date_of_birth
+  #validates :gender , :presence=>true
 
   acts_as_authentic do |config|
     # Add custom conﬁguration options here
@@ -16,8 +16,5 @@ class User < ActiveRecord::Base
     has_many :aims
     has_many :exercises
     has_many :workout_days
-
-    #accepts_nested_attributes_for :address, :allow_destroy => true
-
   end
 end

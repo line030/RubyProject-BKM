@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bodykit.Me</title>
+  <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css">
+  <meta charset="utf-8">
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="container">
+  <section id="head">
+      <div style="margin:18px 0px">
+      <div class="row">
+          <div class="span4">
+            <h1>BodyKit.Me <small>- Just do it!</small></h1>
+          </div>
+          <div class="span8">
+            <ul class="nav nav-pills pull-right">
+                <li class="active" id="linkFeatures">
+                  <a href="#">Features</a>
+                </li>
+                <li>
+                  <a href="#">Mobile</a>
+                </li>
+                <li>
+                  <a href="#">Screenshots</a>
+                </li>
+                <li class="dropdown" id="login">
+                  <a class="dropdown-toggle"
+                     data-toggle="dropdown"
+                     href="#login">
+                    Login
+                    <b class="caret"></b>
+                  </a>
+                  <form class="dropdown-menu pull-right" style="padding: 15px" action="<%= user_sessions_path %>" method="post">
+                    <input name="user_session[login]" type="text" class="input-medium" placeholder="Login">
+                    <input name="user_session[password]" type="password" class="input-medium" placeholder="Password">
+                    <div style="text-align: center">
+                    <button type="submit" class="btn">Login</button>
+                    </div>
+                  </form>
+                </li>
+            </ul>
+          </div>
+       </div>
+      </div>
+
+       <div class="hero-unit" style="position:relative">
+         <h1>Log your workout!</h1>
+         <p>It's completely FREE!</p>
+         <p>&nbsp;</p>
+         <p>YOU CAN MAKE IT!</p>
+         <a class="btn btn-primary btn-large">SignUp</a>
+         <%= form_tag "#{users_path}.json", :method => "post", :remote => true,
+                      :id => "testform", :class => "well",
+                      :style=>"position:absolute;right:-10px; top:0px;
+                 margin-top: 20px;
+                 -moz-box-shadow:    0 1px 3px rgba(0,0,0,.25);
+                 -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25);
+                 box-shadow:         0 1px 3px rgba(0,0,0,.25);
+         " do %>
+
+           <h2>Register now!</h2>
+           <div class="feedback"></div>
+           <div id="register-login" class="control-group">
+               <label>Username</label>
+               <%=  text_field_tag "user[login]", nil, :placeholder => "Testosteron"%>
+           </div>
+           <div id="register-email" class="control-group">
+               <label>E-Mail</label>
+               <%=  text_field_tag "user[email]", nil, :placeholder => "E-Mail"%>
+           </div>
+           <label><a href="#">Privacy Policy</a>
+           <input type="checkbox"> Read, agreed & understood
+           </label>
+           <%= submit_tag "Do It", :class => "btn", :disable_with => "Registering"%>
+         <% end %>
+       </div>
+  </section>
+  <div id="references">
+    <blockquote>
+      <p>
+        It is such an amazing tool! I gained 30 pounds of pure Musclemass and can now track all
+        my development! Also the premium Mobile-Apps are stunning! A++
+      </p>
+      <small>Ronny Coleman, IFBB-Pro</small>
+    </blockquote>
+  </div>
+  <section id="features">
+    <div class="page-header">
+        <h1>Features <small>Yes, this app will change your workout.</small></h1>
+    </div>
+      <ul class="thumbnails">
+        <li class="span4">
+          <h3>Thumbnail label</h3>
+          <div class="thumbnail">
+            <img src="http://placehold.it/300x180" />
+            <div class="caption">
+              <p>lorem ipsum dolor sit amet</p>
+            </div>
+          </div>
+        </li>
+        <li class="span4">
+          <h3>Thumbnail label</h3>
+          <div class="thumbnail">
+            <img src="http://placehold.it/300x180" />
+            <div class="caption">
+              <p>lorem ipsum dolor sit amet</p>
+            </div>
+          </div>
+        </li>
+        <li class="span4">
+          <h3>Thumbnail label</h3>
+          <div class="thumbnail">
+            <img src="http://placehold.it/300x180" />
+            <div class="caption">
+              <p>lorem ipsum dolor sit amet</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+  </section>
+  <section id="mobile">
+    <div class="alert alert-info">
+      <strong>We're getting mobile!</strong>
+      Soon we will launch the iOS and Android Versions of Bodykit.me.
+    </div>
+  </section>
+  <footer>
+    <p>&copy; 2012 by line030.</p>
+  </footer>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#linkFeatures").click(function () {
+        $("html,body").animate({scrollTop: $("#features").offset().top}, "fast");
+    });
+
+    $("#testform")
+            .bind('ajax:success', function(e, data, status, xhr) {
+                $(".control-group").removeClass("error");
+                $(".control-group").addClass("success");
+                    jQuery('<button>', {
+                        type: "button",
+                        class: "close",
+                        "data-dismiss": "alert"
+                    }).html("x").appendTo($(".feedback"));
+                $(".feedback").addClass("alert alert-success")
+                        .append("<strong>Registration successfull</strong>");
+                $(".feedback").show();
+                console.log(jQuery.parseJSON(xhr.responseText));
+            })
+            .bind('ajax:error', function(e, xhr, status, error) {
+                $(".control-group").removeClass("error");
+                $(".control-group").removeClass("success");
+                $(".feedback").hide();
+                jQuery.each(jQuery.parseJSON(xhr.responseText), function(i, val) {
+                    $("#register-"+i).addClass("error");
+                })
+            });
+  })
+</script>
+</body>
+</html>

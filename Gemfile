@@ -58,3 +58,5 @@ gem 'meta_search', '>= 1.1.0.pre'
 
 gem "letter_opener"
 
+gem 'less-rails-bootstrap'
+gem 'therubyracer' #for usage of LESS
