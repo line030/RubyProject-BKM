@@ -10,19 +10,43 @@
     <hr/>
     <%= link_to e.name, e %>  <br />
     Beschreibung: <%= e.description %><br/>
-  <%
-     end
-  %>
+  <% end %>
 </p>
+<hr />
 <p>
-  <strong>Add existing exercise: </strong><br />
-  <%= form_tag addExercise_workout_day_path %>
+  <strong>Add existing exercise from Global: </strong><br />
+  <%= form_tag addExistingExercise_workout_day_path do %>
+  <%= select("exercise", "id", @global_exercises_selection_list, {:prompt => "Select a Exercise"}) %>
+  <%= submit_tag 'add' %>
+  <% end %>
+  <br />
+  <strong>Add your own existing exercise: </strong><br />
+  <%= form_tag addExistingExercise_workout_day_path do %>
   <%= select("exercise", "id", @exercises_selection_list, {:prompt => "Select a Exercise"}) %>
-  <br /> <br/>
+  <%= submit_tag 'add' %>
+  <% end %>
+  <br />
+  <br />
   <em>OR add a new exercise</em><br/>
+  <%= form_tag add_new_exercise_workout_day_path do %>
   Name: <br/><%= text_field "exercise", "name" %> <br/>
   Description:<br/> <%= text_area "exercise", "description" %> <br/>
   <%= submit_tag 'add' %>
+  <% end %>
+</p>
+<hr/>
+<p>Tags:</p>
+<p>
+  <% @workout_day.tags.each do |t| %>
+  <%= t.name %>
+  <% end %>
+</p>
+<p>
+  Add:
+  <%= form_tag add_tag_workout_day_path do %>
+    <%= text_field "tag", "name" %>
+    <%= submit_tag 'add' %>
+  <% end %>
 </p>
 
 

@@ -1,4 +1,9 @@
 BodykitMe::Application.routes.draw do
+
+  ActiveAdmin.routes(self)
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   resources :countries
 
   resources :addresses do
@@ -9,10 +14,17 @@ BodykitMe::Application.routes.draw do
 
   resources :user_sessions
 
-  resources :users
+  resources :users do
+    collection do
+      post "check_username"
+      post "check_email"
+    end
+  end
   get "login" => "user_sessions#new"
   get "logout" => "user_sessions#destroy"
   get "register" => "users#new"
+
+
 
   resources :workout_sessions do
     member do
@@ -30,13 +42,18 @@ BodykitMe::Application.routes.draw do
     member do
       post 'click'
       post 'addWorkOut'
+      post 'add_tag'
+      post 'copy'
+      get 'read_only'
     end
 
   end
 
   resources :workout_days do
     member do
-      post 'addExercise'
+      post 'addExistingExercise'
+      post 'add_new_exercise'
+      post 'add_tag'
     end
 
   end
@@ -44,6 +61,8 @@ BodykitMe::Application.routes.draw do
   resources :exercises
 
   resources :member_area
+
+  get "dashboard" => "member_area#index"
 
   #get "member_area" => "member_area#index"
 

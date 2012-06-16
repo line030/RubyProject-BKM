@@ -21,7 +21,7 @@ class UserSessionsController < ApplicationController
 
     respond_to do |format|
       if @user_session.save
-        format.html { redirect_to user_path (current_user), notice: 'Succesfully logged in.' }
+        format.html { redirect_to dashboard_path, notice: 'Succesfully logged in.' }
         format.json { render json: @user_session, status: :created, location: @user_session }
       else
         format.html { render action: "new" }

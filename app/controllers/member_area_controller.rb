@@ -12,12 +12,9 @@ class MemberAreaController < ApplicationController
   # GET /aims/1
   # GET /aims/1.json
   def show
-    @aim = Aim.find(params[:id])
-    @category = @aim.category
-
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @aim }
+      format.html # index.html.erb
+                  #format.json { render json: @aims }
     end
   end
 end

@@ -3,7 +3,10 @@ class WorkoutDaysController < ApplicationController
   before_filter :authenticate
 
   def assign_exercises_selection_list
-    @exercises_selection_list = Exercise.all.collect { |exercise|
+    @global_exercises_selection_list = Exercise.find_all_by_is_global(true).collect { |exercise|
+      [exercise.name, exercise.id]
+    }
+    @exercises_selection_list = Exercise.find_all_by_user_id(current_user.id).collect { |exercise|
       [exercise.name, exercise.id]
     }
   end
@@ -50,18 +53,45 @@ class WorkoutDaysController < ApplicationController
     @workout_day = WorkoutDay.find(params[:id])
   end
 
+  #POST /workout_days/1/add_new_exercise'
+  def add_new_exercise
+    @workout_day = WorkoutDay.find(params[:id])
+    exercise = Exercise.create( :name => params[:exercise][:name],
+                                :description => params[:exercise][:description],
+                                :user_id => current_user.id)
+
+    if !exercise.nil?
+      @workout_day.exercises << exercise
+    end
+
+    @workout_day.save
+
+    respond_to do |format|
+      format.html { redirect_to @workout_day, notice: 'Exercise successfully added' }
+      format.json { render json: @workout_day, status: :created, location: @workout_day }
+    end
+  end
+
+  #POST /workout_days/1/add_tag
+  def add_tag
+    @workout_day = WorkoutDay.find(params[:id])
+    tag = Tag.create(:name => params[:tag][:name])
+    @workout_day.tags << tag
+
+    @workout_day.save
+
+    respond_to do |format|
+      format.html { redirect_to @workout_day, notice: 'Successfully tagged' }
+    end
+  end
+
   #POST /workout_days/1/addExercise'
   #POST /workout_days/1/addExercise.json'
-  def addExercise
+  def addExistingExercise
     @workout_day = WorkoutDay.find(params[:id])
     exerciseId = params[:exercise][:id]
 
-    if (params[:exercise][:name] != "")
-      exercise = Exercise.create(:name => params[:exercise][:name],
-      :description => params[:exercise][:description])
-    else
-      exercise = Exercise.find(exerciseId)
-    end
+    exercise = Exercise.find(exerciseId)
 
     if !exercise.nil?
       @workout_day.exercises << exercise
@@ -79,6 +109,7 @@ class WorkoutDaysController < ApplicationController
   # POST /workout_days.json
   def create
     @workout_day = WorkoutDay.new(params[:workout_day])
+    @workout_day.user_id = current_user.id
 
     respond_to do |format|
       if @workout_day.save

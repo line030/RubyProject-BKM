@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120526233518) do
+ActiveRecord::Schema.define(:version => 20120613153850) do
+
+  create_table "active_admin_comments", :force => true do |t|
+    t.string   "resource_id",   :null => false
+    t.string   "resource_type", :null => false
+    t.integer  "author_id"
+    t.string   "author_type"
+    t.text     "body"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "namespace"
+  end
+
+  add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
+  add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
+  add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -21,6 +36,24 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
     t.datetime "updated_at", :null => false
     t.string   "city"
   end
+
+  create_table "admin_users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
+  add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
+  add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
   create_table "aims", :force => true do |t|
     t.string   "name"
@@ -50,9 +83,11 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
     t.text     "description"
     t.string   "picture"
     t.integer  "points"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "unit_id"
+    t.boolean  "is_global",   :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "exercises_workout_days", :id => false, :force => true do |t|
@@ -65,6 +100,14 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
     t.integer "workout_session_id"
     t.integer "multiplier"
     t.decimal "value",              :precision => 8, :scale => 2
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "units", :force => true do |t|
@@ -103,22 +146,21 @@ ActiveRecord::Schema.define(:version => 20120526233518) do
     t.integer  "address_id"
   end
 
-  create_table "users_workout_plans", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "workout_plan_id"
-  end
-
   create_table "workout_days", :force => true do |t|
     t.string   "day"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "workout_plan_id"
+    t.boolean  "is_global",       :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "workout_plans", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_global",  :default => false, :null => false
+    t.integer  "user_id"
   end
 
   create_table "workout_sessions", :force => true do |t|

@@ -50,4 +50,11 @@ group :test do
   gem "cucumber-rails"
 end
 
-gem	'authlogic'
+gem 'authlogic'
+
+gem 'activeadmin'
+
+gem 'meta_search', '>= 1.1.0.pre'
+
+gem "letter_opener"
+

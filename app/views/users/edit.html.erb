@@ -1,5 +1,7 @@
 <h1>Editing user</h1>
 
+<p id="notice"><%= notice %></p>
+
 <!-- Form für User und Address -->
 
 <%= form_for(@user) do |f| %>
@@ -16,11 +18,13 @@
     <% end %>
 
     <div class="field">
+      <%= f.hidden_field :login, {:id=>"user_login_original", :name => "user[login][original]"} %>
       <%= f.label :login %><br />
       <%= f.text_field :login %>
     </div>
 
     <div class="field">
+      <%= f.hidden_field :email, {:id=>"user_email_original", :name => "user[email][original]"} %>
       <%= f.label :email %><br />
       <%= f.text_field :email %>
     </div>
@@ -51,12 +55,6 @@
     <%= f.radio_button :gender, "female" %>
       <b>female</b>
     </div>
-      <!--<div>
-      <input id="gender_male" name="gender" type="radio" value="MALE" checked=@checked />
-      <b>male</b>
-        <input id="gender_female" name="gender" type="radio" value="FEMALE"=@checked />
-      <b>female</b>
-    </div>-->
 
     <hr/>
     <h3>Address</h3>
@@ -87,28 +85,99 @@
     </div>
 <% end %>
 
+<hr />
 <%= button_to('Destroy', @user, :confirm => 'Are you sure?',:method => "delete") %>
-
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<hr />
 
 <script type="text/javascript">
-
-  /*$(document).ready(function(){
-
       $(document).ready(function () {
-          $("#edit_user_12").validate({
+
+          $.validator.messages.remote = "already taken";
+
+          $.validator.addMethod("optionalPasswordEquals",
+                                function(value, element) {
+                                    if ($("#user_password").val().length > 0) {
+                                        return $("#user_password").val() == $("#user_password_confirmation").val();
+                                    } else {
+                                        return true;
+                                    }
+                                },
+                                "Passwords not equal");
+
+          $.validator.addMethod("loginRemote", function(value, element) {
+              if ($("#user_login_original").val() == $("#user_login").val()) {
+                  return "dependency-mismatch";
+              }
+              return $.validator.methods.remote.apply(this, arguments);
+          }, "Username already taken");
+
+          $.validator.addMethod("emailRemote", function(value, element) {
+              if ($("#user_email_original").val() == $("#user_email").val()) {
+                  return "dependency-mismatch";
+              }
+              return $.validator.methods.remote.apply(this, arguments);
+          }, "EMail already taken");
+
+
+          $("*[id*=edit_user_]").validate({
               onchange:  true,
               rules: {
-                  "user[login]": {required: true, minlength: 0}
+                  "user[login]": {
+                      required: true,
+                      minlength: 4,
+                      loginRemote: {
+                          url: "/users/check_username",
+                          type: "post"
+                      }
+                  },
+                  "user[password]": {
+                      required: false,
+                      minlength: 4
+                  },
+                  "user[password_confirmation]": {
+                      required: function(element) {
+                          return $("#user_password").val().length > 0;
+                      },
+                      optionalPasswordEquals: true,
+                      minlength: 4
+                  },
+                  "user[email]": {
+                      required: true,
+                      email: true,
+                      emailRemote: {
+                          url: "/users/check_email",
+                          type: "post"
+                      }
+                  },
+                  "user[forename]": {
+                      required: true
+                  },
+                  "user[surname]": {
+                      required: true
+                  },
+                  "user[date_of_birth]": {
+                      required: true
+                  },
+                  "user[gender]": {
+                      required: true
+                  }
+              } ,
+              messages: {
+                  "user[login]": {
+                    required: "This field is required.",
+                    minlength: jQuery.format("At least {0} characters required!")
+                  }
               }
+
           });
 
+          $("#user_date_of_birth").datepicker({
+              yearRange: '-60Y:-14Y',
+              changeYear : true,
+              changeMonth: true,
+              dateFormat : 'dd.mm.yy'
+          })
+
       });
-
-  });
-  */
-
 
 </script>

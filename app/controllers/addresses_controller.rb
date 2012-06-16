@@ -1,7 +1,8 @@
 class AddressesController < ApplicationController
   # GET /addresses
   # GET /addresses.json
-  def index
+
+    def index
     @addresses = Address.all
 
     country = @addresses.collect { | e |
@@ -19,7 +20,6 @@ class AddressesController < ApplicationController
   # GET /addresses/1.json
   def show
     @address = Address.find(params[:id])
-
     @country = @address.country
 
     respond_to do |format|
@@ -55,6 +55,9 @@ class AddressesController < ApplicationController
   # POST /addresses
   # POST /addresses.json
   def create
+
+    setName
+
     @address = Address.new(params[:address])
 
     respond_to do |format|
