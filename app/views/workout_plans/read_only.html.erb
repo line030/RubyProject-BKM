@@ -1,0 +1,32 @@
+<h1>Workoutplan - READ ONLY</h1>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Trainings Plan Name:</b>
+  <%= @workout_plan.name %>
+  <br/>
+<hr/>
+  <p>
+  <b>Added-WorkOutDays:</b><br/>
+
+
+   <% @workout_days.each do | w | %>
+        <br/>
+       <%= link_to w.day, w%>
+    <% end %>
+
+  </p>
+
+<hr/>
+<%= button_to "Kopieren", copy_workout_plan_path %>
+<hr/>
+<p>Tags:</p>
+<p>
+  <% @workout_plan.tags.each do |t| %>
+      <%= t.name %>
+  <% end %>
+</p>
+
+<hr/>
+
+<%= link_to 'Back', workout_plans_path %>
