@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120613153850) do
+ActiveRecord::Schema.define(:version => 20120616180218) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -136,14 +136,16 @@ ActiveRecord::Schema.define(:version => 20120613153850) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.string   "surname"
     t.string   "forename"
     t.date     "date_of_birth"
     t.string   "gender"
-    t.boolean  "enabled",             :default => true
+    t.boolean  "enabled",                :default => true
     t.integer  "address_id"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   create_table "workout_days", :force => true do |t|

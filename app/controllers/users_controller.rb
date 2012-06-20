@@ -4,6 +4,23 @@ class UsersController < ApplicationController
   before_filter :authenticate
   skip_before_filter :authenticate, :only => [:new,:create,:check_email,:check_username]
 
+  #before_create { generate_token(:auth_token) }
+
+  def send_password_reset
+    #puts "DENIZ: SendPassword pressed"
+    #generate_token(:password_reset_token)
+    #self.password_reset_sent_at = Time.zone.now
+    #save!
+    #UserMailer.password_reset(self).deliver
+  end
+
+  def generate_token(column)
+    begin
+      self[column] = SecureRandom.urlsafe_base64
+    end while User.exists?(column => self[column])
+  end
+
+
   # GET /users
   # GET /users.json
   def index
@@ -38,6 +55,9 @@ class UsersController < ApplicationController
   # GET /users/new.json
   def new
     @user = User.new
+
+   # @address = Address.create
+   # @user.address = @address
 
     respond_to do |format|
       format.html # new.html.erb

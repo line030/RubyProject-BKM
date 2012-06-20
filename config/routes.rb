@@ -1,5 +1,13 @@
 BodykitMe::Application.routes.draw do
 
+  #get "password_resets/new"
+
+  resources :password_resets do
+    member do
+      get 'new'
+    end
+  end
+
   root :to => 'public#index'
   
   ActiveAdmin.routes(self)
