@@ -37,7 +37,7 @@ ActiveAdmin.register User do
         if !f.object.id.nil?
           f.inputs "Address" do
             f.semantic_fields_for user.address do |p|
-              p.label :name, link_to(user.address.name, admin_address_path(user))
+              p.label :name, link_to(user.address.name, admin_address_path(user.address_id))
             end
           end
         else
