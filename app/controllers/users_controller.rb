@@ -98,6 +98,7 @@ class UsersController < ApplicationController
         format.html { redirect_to dashboard_path, notice: 'Welcome to Bodykit.Me!' }
         format.json { render json: @user, status: :created, location: @user }
       else
+        @address.delete
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

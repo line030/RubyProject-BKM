@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
 
 
-    belongs_to :address
+    has_one :address, :dependent => :delete
     has_many :workout_plans
     has_many :workout_sessions
     has_many :aims
