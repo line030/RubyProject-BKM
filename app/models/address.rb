@@ -6,7 +6,6 @@ class Address < ActiveRecord::Base
 
   def name
     # setting the name for the admin view
-
     if (street.to_s.empty? && zip.to_s.empty?)
       @name = "id:" + id.to_s + ";Empty"
     else
