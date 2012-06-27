@@ -1,0 +1,13 @@
+Hi <%= @user.login%>,
+
+thank you for registering at Bodykit.me!
+
+Please click on the following link to activate your registration and define a password.
+
+<%= edit_password_reset_url(@user.password_reset_token) %>
+
+Cheers,
+
+BodyKit.Me - Team
+
+If you did not registered at Bodykit.me, just ignore this email.

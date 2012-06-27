@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "mail.line030.de"
+  default from: "BodyKit.Me <info@bodykit.me>"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -9,6 +9,11 @@ class UserMailer < ActionMailer::Base
   def password_reset(user)
     @user = user
     mail :to => user.email, :subject => "Password Reset"
+  end
+
+  def registration(user)
+    @user = user
+    mail :to => user.email, :subject => "Confirm your registration at Bodykit.Me"
   end
 
 end

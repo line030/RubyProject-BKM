@@ -41,15 +41,15 @@ BodykitMe::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :address              => "XXXX.de",
+      :address              => "mail.line030.de",
       :port                 => 25,
-      :domain               => 'XXXX.de',
-      :user_name            => 'XXXXXX@XXXX.de',
-      :password             => 'XXXXXX',
+      :domain               => 'line030.de',
+      :user_name            => 'bodykit-dev@line030.de',
+      :password             => 'peter',
       :authentication       => 'plain',
       :enable_starttls_auto => false ,
       :openssl_verify_mode => 'none'
-    
+
   }
 
 end

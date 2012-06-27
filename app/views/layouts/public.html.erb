@@ -64,18 +64,22 @@
 
            <h2>Register now!</h2>
            <div class="feedback"></div>
+           <div class="alert alert-error" id="errorContainer" style="display:none"></div>
            <div id="register-login" class="control-group">
                <label>Username</label>
                <%=  text_field_tag "user[login]", nil, :placeholder => "Chose a Username"%>
+               <span id="register-error-login"></span>
            </div>
            <div id="register-email" class="control-group">
                <label>E-Mail</label>
                <%=  text_field_tag "user[email]", nil, :placeholder => "E-Mail"%>
+               <span class="register-error-email"></span>
            </div>
-           <label><a href="#">Privacy Policy</a>
-           <input type="checkbox"> Read, agreed & understood
-           </label>
-           <%= submit_tag "Do It", :class => "btn", :disable_with => "Registering"%>
+           <a href="#">Privacy Policy</a>
+           <br/>
+           <input type="checkbox" name="checkTos"> Read, agreed & understood
+           <br/>
+           <%= submit_tag "Register", :class => "btn", :disable_with => "Registering"%>
          <% end %>
        </div>
   </section>
@@ -134,21 +138,31 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
+      //jQuery.validator.setDefaults({
+    //    errorPlacement: function (error, element) {
+          //        console.log(error.size());
+          //        $(".feedback").addClass("alert alert-error");
+          //        error.appendTo($(".feedback"));
+          //        $(".feedback").show();
+          //    }
+    //});
+
     $("#linkFeatures").click(function () {
         $("html,body").animate({scrollTop: $("#features").offset().top}, "fast");
     });
 
     $("#registrationForm")
             .bind('ajax:success', function(e, data, status, xhr) {
+                $("#errorContainer").hide();
+
                 $(".control-group").removeClass("error");
-                $(".control-group").addClass("success");
                     jQuery('<button>', {
                         type: "button",
                         class: "close",
                         "data-dismiss": "alert"
                     }).html("x").appendTo($(".feedback"));
                 $(".feedback").addClass("alert alert-success")
-                        .append("<strong>Registration successfull</strong>");
+                        .html("<strong>Thank you!</strong> Please check your Inbox");
                 $(".feedback").show();
                 console.log(jQuery.parseJSON(xhr.responseText));
             })
@@ -156,6 +170,7 @@
                 $(".control-group").removeClass("error");
                 $(".control-group").removeClass("success");
                 $(".feedback").hide();
+
                 jQuery.each(jQuery.parseJSON(xhr.responseText), function(i, val) {
                     $("#register-"+i).addClass("error");
                 })
@@ -163,6 +178,8 @@
 
       //validation of registration
       $("#registrationForm").validate({
+          errorContainer: "#errorContainer",
+          errorLabelContainer: "#errorContainer" ,
           rules: {
               "user[login]": {
                   required: true,
@@ -171,6 +188,21 @@
               "user[email]": {
                   required: true,
                   email: true
+              },
+              "checkTos": {
+                  required: true
+              }
+          },
+
+          messages: {
+              "user[login]": {
+                  required: "Username is required"
+              },
+              "user[email]": {
+                  required: "Email is required",
+              },
+              "checkTos": {
+                  required: "Please read & accept our ToS"
               }
           }
       });

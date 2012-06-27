@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
     # Add custom conﬁguration options here
     config.crypto_provider = Authlogic::CryptoProviders::MD5
 
-
-
     has_one :address, :dependent => :delete
     has_many :workout_plans
     has_many :workout_sessions
@@ -18,8 +16,14 @@ class User < ActiveRecord::Base
     has_many :workout_days
   end
 
+  def send_registration_mail
+    generate_token(:password_reset_token)
+    self.password_reset_sent_at = Time.zone.now
+    save!
+    UserMailer.registration(self).deliver
+  end
+
   def send_password_reset
-    puts "DENIZ: SendPassword pressed"
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save!

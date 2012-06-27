@@ -17,18 +17,17 @@ class UserSessionsController < ApplicationController
   # POST /user_sessions
   # POST /user_sessions.json
   def create
-    @user_session = UserSession.new(params[:user_session])
-    #render :text => params, :layout => false
-    #return
+    user = User.find_by_login(params[:user_session][:login])
 
-    respond_to do |format|
-      if @user_session.save
-        format.html { redirect_to dashboard_path, notice: 'Succesfully logged in.' }
-        format.json { render json: @user_session, status: :created, location: @user_session }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user_session.errors, status: :unprocessable_entity }
-      end
+    @user_session = UserSession.new(params[:user_session])
+
+    #render action: "new" if !user.enabled?
+    if user.enabled?
+      @user_session.save
+
+      redirect_to dashboard_path, notice: 'Succesfully logged in.'
+    else
+      redirect_to new_user_session_path, notice: 'You are blocked'
     end
   end
 
@@ -39,7 +38,7 @@ class UserSessionsController < ApplicationController
     @user_session.destroy
 
     respond_to do |format|
-      format.html { redirect_to login_path, notice: 'logged out' }
+      format.html { redirect_to root_path, notice: 'logged out' }
       format.json { head :no_content }
     end
   end
