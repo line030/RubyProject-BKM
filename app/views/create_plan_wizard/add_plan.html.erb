@@ -1,0 +1,7 @@
+<p>Please Fill in the name of your Plan!</p>
+
+<%= form_for(@workout_plan, :url => wizard_path, :method => :put) do |f| %>
+    <%= f.text_field :name, :placeholder => "NAME" %>
+    <br/>
+    <%= f.submit 'Next', :class => 'btn btn-primary' %>
+<% end %>

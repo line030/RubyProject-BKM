@@ -1,0 +1,45 @@
+<b>Added-WorkOutDays:</b><br/>
+
+  <% @workout_plan.workout_days.each do | w | %>
+      <br/>
+      <%= link_to w.day, w%>
+  <% end %>
+
+</p>
+<hr/>
+<b>Create New TrainingDay</b>
+<%= form_for(@workout_day, :url => wizard_path, :method => :put) do |f| %>
+    <%= f.text_field :day, :placeholder => "NAME" %>
+    <%= f.hidden_field  :workout_plan_id, :value => @workout_plan.id%>
+    <br/>
+    <%= f.submit 'Next' %>
+<% end %>
+
+<!-- Globale tage adden bzw. rein kopieren-->
+
+
+<hr/>
+
+<strong>Add existing Global Training Days: </strong><br />
+
+<%= form_tag add_new_day_create_plan_wizard_path do %>
+    <%= select("workout_day", "id", @global_workout_day_selection_list , {:prompt => "Select a Traning Day"}) %>
+    <%= hidden_field_tag "workout_plan_id", "id", :value => @workout_plan.id%>
+    <%= submit_tag 'add' %>
+<% end %>
+
+<hr/>
+
+<strong>Add existing Own Training Days: </strong><br />
+
+<%= form_tag add_new_day_create_plan_wizard_path do %>
+    <%= select("workout_day", "id", @workout_day_selection_list , {:prompt => "Select a Traning Day"}) %>
+    <%= hidden_field_tag "workout_plan_id", "id", :value => @workout_plan.id%>
+    <%= submit_tag 'add' %>
+<% end %>
+</p>
+
+<br/>
+<%= link_to 'Back', previous_wizard_path %>
+<span>|</span>
+<%= link_to 'Next', next_wizard_path %>

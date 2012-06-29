@@ -76,6 +76,14 @@ BodykitMe::Application.routes.draw do
 
   get "dashboard" => "member_area#index"
 
+  resources :create_plan_wizard do
+    member do
+    post 'add_new_day'
+    post 'add_new_exercise'
+    end
+  end
+
+
   #get "member_area" => "member_area#index"
 
   # The priority is based upon order of creation:

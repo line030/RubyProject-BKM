@@ -1,0 +1,62 @@
+<p>
+
+  <% @workout_days.each do |workout_day| %>
+
+        Workoutday: <%= workout_day.day %> <br/>
+
+        <% workout_day.exercises.each do | w | %>
+            Added Exercise: <%= link_to w.name, w%>
+            <br/>
+        <% end %>
+            <br/>
+
+      <%= form_for(@exercise, :url => wizard_path, :method => :put) do |f| %>
+          <%= f.text_field :name, :placeholder => "NAME" %>
+          <%= f.text_field :description, :placeholder => "DESCRIPTION" %>
+          <%= f.text_field :picture, :placeholder => "PICTURE" %>
+          <%= f.text_field :points, :placeholder => "POINTS" %>
+          <%= select("exercise", "unit_id", @unit_selection_list,
+                     {:prompt =>  "Select Unit"  } ) %>
+
+          <%= f.hidden_field :workout_day_id, :value => workout_day.id%>
+          <%= f.submit 'Next', :class => 'btn btn-primary'%>
+      <% end %>
+
+
+     <!-- <%= form_tag add_new_exercise_create_plan_wizard_path do |f| %>
+            Name: <%= text_field "exercise", "name" %>
+            Description: <%= text_field "exercise", "description" %>
+            Picture: <%= text_field "exercise", "picture" %> <br/>
+            <%= hidden_field_tag "workout_plan_id", "id", :value => @workout_plan.id%>
+            <%= hidden_field_tag "workout_day_id", "id", :value => workout_day.id%>
+            <%= submit_tag  "Add", :class => 'btn btn-primary' %>
+            <br/>
+            <br/>
+        <% end %>
+        -->
+
+
+      <strong>Add existing Global Exercise: </strong><br />
+
+      <%= form_tag add_new_exercise_create_plan_wizard_path do %>
+          <%= select("exercise", "id", @global_exercises_selection_list , {:prompt => "Select a Traning Day"}) %>
+          <%= hidden_field_tag "workout_day_id", "id", :value => workout_day.id%>
+          <%= submit_tag 'add', :class => 'btn btn-primary' %>
+      <% end %>
+
+      <strong>Add existing Own Exercise: </strong><br />
+
+      <%= form_tag add_new_exercise_create_plan_wizard_path do %>
+          <%= select("exercise", "id", @exercises_selection_list , {:prompt => "Select a Traning Day"}) %>
+          <%= hidden_field_tag "workout_day_id", "id", :value => workout_day.id%>
+          <%= submit_tag 'add', :class => 'btn btn-primary' %>
+      <% end %>
+      <hr>
+
+  <% end %>
+
+<%= link_to 'Back', previous_wizard_path %>
+<span>|</span>
+<%= link_to 'Next', dashboard_path %>
+
+</p>
