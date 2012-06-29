@@ -61,13 +61,13 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     if params[:user][:password].nil?
-      params[:user][:password] = "password"
-      params[:user][:password_confirmation] = "password"
+      pw = SecureRandom.urlsafe_base64
+      params[:user][:password] = pw
+      params[:user][:password_confirmation] = pw
     end
 
     @user = User.new(params[:user])
-
-    #@user.gender = params[:gender]
+    @user.enabled = false;
 
     #createn einer leeren Address
     @address = Address.create
@@ -78,6 +78,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        @user.send_registration_mail
         format.html { redirect_to dashboard_path, notice: 'Welcome to Bodykit.Me!' }
         format.json { render json: @user, status: :created, location: @user }
       else
