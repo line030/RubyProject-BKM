@@ -3,7 +3,7 @@
     #before_filter :authenticate
 
     steps :add_plan, :add_day, :add_exercise
-    # ...
+    # ....
 
     def show
 
