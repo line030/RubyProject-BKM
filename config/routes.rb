@@ -57,6 +57,7 @@ BodykitMe::Application.routes.draw do
       post 'add_tag'
       post 'copy'
       get 'read_only'
+      put 'invert_active'
     end
 
   end

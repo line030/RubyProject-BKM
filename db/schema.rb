@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627140021) do
+ActiveRecord::Schema.define(:version => 20120629224152) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(:version => 20120627140021) do
     t.datetime "updated_at",                    :null => false
     t.boolean  "is_global",  :default => false, :null => false
     t.integer  "user_id"
+    t.boolean  "is_active"
   end
 
   create_table "workout_sessions", :force => true do |t|

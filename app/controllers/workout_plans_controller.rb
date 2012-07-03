@@ -85,6 +85,19 @@ class WorkoutPlansController < ApplicationController
     end
   end
 
+  #UPDATE /workout_plans/1/invert_active
+  def invert_active
+    @workout_plan = WorkoutPlan.find(params[:id])
+    @workout_plan.is_active = !@workout_plan.is_active?
+
+    @workout_plan.save!
+
+    respond_to do |format|
+      format.html { redirect_to workout_plans_path, notice: 'Successfully de-/activated' }
+      format.json { render json: @workout_plan, status: :created, location: @workout_plan }
+    end
+  end
+
   def assign_workout_selection_lists
 
     @global_workout_day_selection_list = WorkoutDay.find_all_by_is_global(true).collect {|work| [ work.day, work.id ] }
