@@ -1,14 +1,4 @@
-<h1>Listing workout_plans</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Active?</th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<h1>Workout Plans</h1>
 
 <% @workout_plans.each_with_index do |workout_plan, index| %>
   <div class=" alert  <%= "alert-success" if workout_plan.is_active?%>">
@@ -21,7 +11,7 @@
 
     <h2>
       <%= link_to workout_plan.name, workout_plan %>
-      <a href="#" data-toggle="collapse" data-target="#details-<%= index.to_s%>" onclick="changeToggle(<%=index%>)">
+      <a href="#" data-toggle="collapse" data-target="#details-<%= index.to_s%>" onclick="changeToggle('',<%=index%>);return false">
         <%
            toggleState = 'toggleDown'
            if (workout_plan.is_active?)
@@ -33,70 +23,109 @@
     </h2>
 
     <div id="details-<%= index.to_s%>" class="collapse <%= 'in' if workout_plan.is_active?%>">
-        <% workout_plan.workout_days.each_with_index do |day, index| %>
-            <div class="well" style="float:left;width:250px;color:black;margin-right:6px;">
-              <h3><%= day.day %></h3>
+        <% if workout_plan.workout_days.empty? %>
+          <p>No Workoutdays added yet. <%= link_to 'Add workout days now!', workout_plan  %></p>
+        <% else %>
+            <% workout_plan.workout_days.each_with_index do |day, index| %>
+                <div class="well" style="float:left;width:250px;color:black;margin-right:6px;">
+                  <h3><%= day.day %></h3>
 
-              <% day.exercises.each do |exercise| %>
-                <p><%= link_to exercise.name, exercise%></p>
-              <% end %>
+                  <% day.exercises.each do |exercise| %>
+                    <p><%= link_to exercise.name, exercise%></p>
+                  <% end %>
 
-            </div>
+                </div>
 
-            <% if ((index+1) % 3) == 0 %>
-                <div class="clearfix"></div>
+                <% if ((index+1) % 3) == 0 %>
+                    <div class="clearfix"></div>
+                <% end %>
+
             <% end %>
-
         <% end %>
         <div class="clearfix"></div>
-        <% workout_plan.tags.each do |tag| %>
-            <span class="label">
-              <%= tag.name %>
-              x
-            </span> &nbsp;
-        <% end %>
+        <p>
+            <% workout_plan.tags.each do |tag| %>
+                <span class="label">
+                  <%= tag.name %>
+                  x
+                </span> &nbsp;
+            <% end %>
+        </p>
+        <p>
+            Options:
+            <%= link_to 'Show', workout_plan %>,
+            <%= link_to 'Edit', edit_workout_plan_path(workout_plan) %>,
+            <%= link_to 'Destroy', workout_plan, confirm: 'Are you sure?', method: :delete %>
+        </p>
     </div>
   </div>
-  <tr>
-    <td><%= workout_plan.name %></td>
-    <td><%= workout_plan.is_active? %></td>
-    <td><%= link_to 'Activate!', invert_active_workout_plan_path(workout_plan), method: :put %></td>
-    <td><%= link_to 'Show', workout_plan %></td>
-    <td><%= link_to 'Edit', edit_workout_plan_path(workout_plan) %></td>
-    <td><%= link_to 'Destroy', workout_plan, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
 <% end %>
-</table>
 
 <br />
 
-<hr />
-<h2>Global WorkoutPlan templates:</h2>
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<h2>Workout Plan Templates</h2>
+<% @global_workout_plans.each_with_index do |workout_plan, index| %>
+    <div class=" alert  <%= "alert-success" if workout_plan.is_active?%>">
+      <%= button_to 'Copy', copy_workout_plan_path(workout_plan), method: :post, confirm: 'You are going to copy this Plan!', class: 'btn pull-right' %>
 
-  <% @global_workout_plans.each do |workout_plan| %>
-      <tr>
-        <td><%= workout_plan.name %></td>
-        <td><%= link_to 'Show', read_only_workout_plan_path(workout_plan) %></td>
-        <td></td>
-        <td></td>
-      </tr>
-  <% end %>
-</table>
+      <h2>
+        <%= link_to workout_plan.name, read_only_workout_plan_path(workout_plan) %>
+        <a href="#" data-toggle="collapse" data-target="#details-global-<%= index.to_s%>" onclick="changeToggle('global', <%=index%>);return false">
+          <%
+             toggleState = 'toggleDown'
+             if (workout_plan.is_active?)
+               toggleState = 'toggleUp'
+             end
+          %>
+          <span id="toggler-global-<%=index%>" class="<%=toggleState%>"></span>
+        </a>
+      </h2>
+
+      <div id="details-global-<%= index.to_s%>" class="collapse <%= 'in' if workout_plan.is_active?%>">
+            <% workout_plan.workout_days.each_with_index do |day, index| %>
+                <div class="well" style="float:left;width:250px;color:black;margin-right:6px;">
+                  <h3><%= day.day %></h3>
+
+                  <% day.exercises.each do |exercise| %>
+                      <p><%= link_to exercise.name, exercise%></p>
+                  <% end %>
+
+                </div>
+
+                <% if ((index+1) % 3) == 0 %>
+                    <div class="clearfix"></div>
+                <% end %>
+
+            <% end %>
+        <div class="clearfix"></div>
+        <p>
+          <% workout_plan.tags.each do |tag| %>
+                <span class="label">
+                  <%= tag.name %>
+                  x
+                </span> &nbsp;
+          <% end %>
+        </p>
+        <p>
+          Options:
+          <%= link_to 'Show', workout_plan %>,
+          <%= link_to 'Edit', edit_workout_plan_path(workout_plan) %>,
+          <%= link_to 'Destroy', workout_plan, confirm: 'Are you sure?', method: :delete %>
+        </p>
+      </div>
+    </div>
+<% end %>
 
 <hr/>
 
 <%= link_to 'New Workout plan', new_workout_plan_path %>
 
 <script type="text/javascript">
-  function changeToggle(i) {
-      elem = $("#toggler-" + i);
+  function changeToggle(prefix, i) {
+      if(prefix != "") {
+          prefix = prefix + "-"
+      }
+      elem = $("#toggler-" + prefix + i);
       if (elem.hasClass("toggleUp")) {
          elem.attr("class", "toggleDown")
       } else {
