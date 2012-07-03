@@ -130,4 +130,17 @@ class AimsController < ApplicationController
       return false
     end
   end
+
+  #PUT /aims/1/invert_active
+  def invert_active
+    @aim = Aim.find(params[:id])
+    @aim.is_active = !@aim.is_active?
+
+    @aim.save!
+
+    respond_to do |format|
+      format.html { redirect_to aims_path, notice: 'Successfully de-/activated' }
+      format.json { render json: @aim, status: :created, location: @aim }
+    end
+  end
 end

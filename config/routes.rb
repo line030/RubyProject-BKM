@@ -46,7 +46,11 @@ BodykitMe::Application.routes.draw do
   
   resources :categories
 
-  resources :aims
+  resources :aims do
+    member do
+      put 'invert_active'
+    end
+  end
 
   resources :units
 

@@ -6,6 +6,8 @@
     <th>Value</th>
     <th>Einheit</th>
     <th>Category</th>
+    <th>is_active?</th>
+    <th></th>
     <th></th>
     <th></th>
   </tr>
@@ -21,13 +23,17 @@
       <%= "No Unit" %>
     <% end %></td>
     <td>
-      <% if aim.id.nil? %>
-        <%= @categories[aim.id] %>
+      <% if !aim.category.nil? %>
+        <%= aim.category.name %>
       <% else %>
           <%= "No Category" %>
         <% end %>
     </td>
+    <td>
+      <%= aim.is_active?%>
+    </td>
 
+    <td><%= link_to 'Activate', invert_active_aim_path(aim), :method => 'put'%></td>
     <td><%= link_to 'Show', aim %></td>
     <td><%= link_to 'Edit', edit_aim_path(aim) %></td>
     <td><%= link_to 'Destroy', aim, confirm: 'Are you sure?', method: :delete %></td>

@@ -85,7 +85,7 @@ class WorkoutPlansController < ApplicationController
     end
   end
 
-  #UPDATE /workout_plans/1/invert_active
+  #PUT /workout_plans/1/invert_active
   def invert_active
     @workout_plan = WorkoutPlan.find(params[:id])
     @workout_plan.is_active = !@workout_plan.is_active?
