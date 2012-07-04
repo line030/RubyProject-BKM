@@ -1,5 +1,7 @@
 BodykitMe::Application.routes.draw do
 
+  resources :aim_progresses
+
   #get "password_resets/new"
 
   resources :password_resets do
@@ -49,6 +51,7 @@ BodykitMe::Application.routes.draw do
   resources :aims do
     member do
       put 'invert_active'
+      post 'add_new_aim_pro'
     end
   end
 

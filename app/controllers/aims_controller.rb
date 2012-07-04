@@ -22,6 +22,8 @@ class AimsController < ApplicationController
   # GET /aims/1.json
   def show
     @aim = Aim.find(params[:id])
+    @aim_progress = AimProgress.new
+
     if !user_is_allowed?(@aim)
       redirect_to aims_path
       return
@@ -143,4 +145,35 @@ class AimsController < ApplicationController
       format.json { render json: @aim, status: :created, location: @aim }
     end
   end
+
+  def add_new_aim_pro
+    @aim = Aim.find(params[:id])
+
+    #render :text => params[:aim_progress][:date], :layout => false
+    #return
+
+    if params[:aim_progress_value].blank?
+
+    else
+      @aim_progress = AimProgress.create!
+      @aim_progress.value = params[:aim_progress_value]
+      @aim_progress.logging_date = params[:aim_progress_logging_date].to_time
+      @aim_progress.aim_id = params[:id]
+      @aim_progress.save!
+
+      #render :text => @aim_progress.logging_date, :layout => false
+      #return
+
+      @aim.aim_progresses << @aim_progress
+
+      @aim.save!
+
+    end
+
+    redirect_to aim_path()
+
+
+  end
+
+
 end

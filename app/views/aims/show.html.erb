@@ -19,5 +19,48 @@
   %>
 </p>
 
+<p>
+  <b>Aim Progresses:</b>
+
+  <% if !(@aim.aim_progresses.nil?)
+
+        @aim.aim_progresses.each do | pro |%>
+
+        <br/>
+
+        <%= pro.id %>
+
+       <% end %>
+
+  <% end %>
+</p>
+
+<hr>
+
+<b>Add a Progress</b>
+
+<%= form_tag add_new_aim_pro_aim_path do %>
+    Value: <%= text_field_tag "aim_progress_value"%>
+    Date: <%= text_field_tag "aim_progress_logging_date"%>
+    <%= hidden_field_tag "aim", :id => @aim.id%>
+    <%= submit_tag 'add', :class => 'btn btn-primary' %>
+<% end %>
+
+
+
+
 <%= link_to 'Edit', edit_aim_path(@aim) %> |
 <%= link_to 'Back', aims_path %>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#aim_progress_logging_date").datepicker({
+            setDate: new Date(),
+            dateFormat : 'dd.mm.yy'
+        })
+
+    });
+
+</script>

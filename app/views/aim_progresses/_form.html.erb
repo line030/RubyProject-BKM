@@ -1,0 +1,33 @@
+<%= form_for(@aim_progress) do |f| %>
+  <% if @aim_progress.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@aim_progress.errors.count, "error") %> prohibited this aim_progress from being saved:</h2>
+
+      <ul>
+      <% @aim_progress.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :value %><br />
+    <%= f.number_field :value %>
+  </div>
+
+    <div class="field">
+      <%= f.label :logging_date %><br />
+      <%= f.date_select :logging_date %>
+    </div>
+
+   <div class="field">
+      <%= f.label :aim_id %><br />
+      <%= select("aim_progress", "aim_id", @aim_selection_list,
+                 {:prompt =>  "Select Aim"  } ) %>
+   </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
