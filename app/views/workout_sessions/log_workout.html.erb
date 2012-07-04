@@ -1,0 +1,17 @@
+<h1>Log Workout</h1>
+<%= @workout_session.attributes.as_json %>
+
+<%= form_for(@workout_session) do |f| %>
+    <div class="field">
+      <%= f.label :date %><br />
+      <%= f.datetime_select :date %>
+    </div>
+
+    <% @workout_session.exercises.each do |e| %>
+        <strong><%= e.name %></strong>
+        <div class="field">
+            <%= label_tag 'exercise[multiplier]', 'Wdh.' %>
+            <%= text_field 'exercise['+e.id.to_s+']', 'multiplier', {:value => e[:multiplier]} %>
+        </div>
+    <% end %>
+<% end %>

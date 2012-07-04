@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  # for the
-  helper_method	:current_user_session, :current_user
+  helper_method	:current_user_session, :current_user, :current_points
 
   protected
   def current_user_session
@@ -21,6 +20,19 @@ class ApplicationController < ActionController::Base
       redirect_to new_user_session_path
       return false
     end
+  end
+
+  def current_points
+    points = 0
+    if !current_user.nil?
+      points_set = current_user.points
+
+      points_set.each do |p|
+        points += p.value
+      end
+    end
+
+    return points
   end
 
 end

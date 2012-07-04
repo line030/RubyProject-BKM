@@ -84,6 +84,22 @@ class WorkoutSessionsController < ApplicationController
     end
   end
 
+  #GET /workout_plan/log/:id
+  def log_workout
+    @workout_session = WorkoutSession.new
+    @workout_session.user = current_user
+
+    @workout_day = WorkoutDay.find(params[:id])
+
+    @workout_session.workout_day = @workout_day
+    @workout_session.exercises = @workout_day.exercises
+
+    respond_to do |format|
+      format.html # log_workout.html.erb
+      format.json { render json: @workout_session }
+    end
+  end
+
   # GET /workout_sessions/1/edit
   def edit
     @workout_session = WorkoutSession.find(params[:id])
@@ -98,6 +114,9 @@ class WorkoutSessionsController < ApplicationController
   # POST /workout_sessions
   # POST /workout_sessions.json
   def create
+    render :text => params.to_s, :layout => false
+    return
+
     @workout_session = WorkoutSession.new(params[:workout_session])
     @workout_session.user = current_user
 

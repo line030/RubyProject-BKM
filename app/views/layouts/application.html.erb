@@ -35,6 +35,10 @@
       </ul>
       <ul class="nav pull-right">
         <% if current_user %>
+            <li style="font-size:18px">
+              <%= link_to current_points.to_s + " P", points_path, :class => 'badge',
+                          :style => 'font-size:18px; padding:1px 9px 2px; background:white;color:black; margin:7px 10px 11px'%>
+            </li>
             <li>
               <%=  link_to "Logout", logout_path %>
             </li>

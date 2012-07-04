@@ -14,7 +14,7 @@
       <a href="#" data-toggle="collapse" data-target="#details-<%= index.to_s%>" onclick="changeToggle('',<%=index%>);return false">
         <%
            toggleState = 'toggleDown'
-           if (workout_plan.is_active?)
+           if workout_plan.is_active?
              toggleState = 'toggleUp'
            end
         %>
@@ -28,6 +28,11 @@
         <% else %>
             <% workout_plan.workout_days.each_with_index do |day, index| %>
                 <div class="well" style="float:left;width:250px;color:black;margin-right:6px;">
+                  <a href="<%= log_workout_path(:id => day.id)%>"
+                     class="btn pull-right log-workout-tip <%= "disabled" if !workout_plan.is_active? %>"
+                     rel="tooltip" title="Log your workout for <%= day.day %>">
+                        <i class="icon-edit"></i>
+                  </a>
                   <h3><%= day.day %></h3>
 
                   <% day.exercises.each do |exercise| %>
@@ -132,4 +137,8 @@
           elem.attr("class", "toggleUp")
       }
   };
+
+  $(document).ready(function() {
+      $(".log-workout-tip").tooltip({delay: { show: 1000, hide: 100 }});
+  });
 </script>

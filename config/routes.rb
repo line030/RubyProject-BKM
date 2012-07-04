@@ -1,12 +1,14 @@
 BodykitMe::Application.routes.draw do
 
-  #get "password_resets/new"
-
   resources :password_resets do
     member do
       get 'new'
     end
   end
+
+  match 'workout_plan/log/:id' => 'workout_sessions#log_workout', :as => :log_workout
+
+  resources :points
 
   root :to => 'public#index'
   
