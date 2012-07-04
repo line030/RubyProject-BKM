@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Value:</b>
+  <%= @aim_progress.value %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @aim_progress.logging_date %>
+</p>
+
+<p>
+  <b>Aim:</b>
+  <%= @aim_progress.aim_id %>
+</p>
+
+<p>
+  <b>Aim:</b>
+  <%=
+      if !@aim.nil?
+        link_to @aim.name, @aim
+      end
+  %>
+</p>
+
+
+<%= link_to 'Edit', edit_aim_progress_path(@aim_progress) %> |
+<%= link_to 'Back', aim_progresses_path %>

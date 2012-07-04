@@ -1,0 +1,27 @@
+<h1>Listing aim_progresses</h1>
+
+<table>
+  <tr>
+    <th>Value</th>
+    <th>Date</th>
+    <th>Aim</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @aim_progresses.each do |aim_progress| %>
+  <tr>
+    <td><%= aim_progress.value %></td>
+    <td><%= aim_progress.logging_date %></td>
+    <td><%= aim_progress.aim_id %></td>
+    <td><%= link_to 'Show', aim_progress %></td>
+    <td><%= link_to 'Edit', edit_aim_progress_path(aim_progress) %></td>
+    <td><%= link_to 'Destroy', aim_progress, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Aim progress', new_aim_progress_path %>
