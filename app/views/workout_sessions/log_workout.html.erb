@@ -12,6 +12,9 @@
         <div class="field">
             <%= label_tag 'exercise[multiplier]', 'Wdh.' %>
             <%= text_field 'exercise['+e.id.to_s+']', 'multiplier', {:value => e[:multiplier]} %>
+            <%= label_tag 'exercise[value]', 'Value' %>
+            <%= text_field 'exercise['+e.id.to_s+']', 'value', {:value => e[:value]} %>
+
         </div>
     <% end %>
 <% end %>
