@@ -30,17 +30,6 @@ class WorkoutSessionsController < ApplicationController
 
     exerciseWorkoutThrills = @workout_session.exercises_workout_thrills
 
-    #if post, then update the workout details
-    if request.post?
-      joinedExercise = exerciseWorkoutThrills.find(params[:exercise][:exerciseWorkoutThrillsId])
-      joinedExercise.value = params[:exercise][:value]
-      joinedExercise.multiplier = params[:exercise][:multiplier]
-      if joinedExercise.save
-        flash[:notice] = "Activity logged"
-      end
-
-    end
-
     if @workout_session.workout_day.nil?
         @day = "No Training Day in WorkOut Session"
       else
@@ -57,6 +46,29 @@ class WorkoutSessionsController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @workout_session }
     end
+  end
+
+  #POST /workout_sessions/1/update_thrill
+  def update_thrill
+      @workout_session = WorkoutSession.find(params[:id])
+
+      joinedExercise = ExercisesWorkoutThrill.find(params[:exercise][:exerciseWorkoutThrillsId])
+      joinedExercise.value = params[:exercise][:value]
+      joinedExercise.multiplier = params[:exercise][:multiplier]
+
+      if joinedExercise.points.empty?
+        pointsAwarded = 1
+        pointsAwarded = joinedExercise.exercise.points if !joinedExercise.exercise.points.nil?
+        joinedExercise.points << Point.create(:value => pointsAwarded, :user => current_user)
+      end
+
+      joinedExercise.save
+
+      respond_to do |format|
+        format.html { redirect_to @workout_session, notice: 'Activity logged.' }
+        format.json { render json: @workout_session }
+      end
+
   end
 
   # GET /workout_sessions/new

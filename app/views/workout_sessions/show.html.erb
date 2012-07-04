@@ -11,7 +11,7 @@
   <h3><%= @day %></h3>
 
   <% @exercises.each do |e| %>
-    <%= form_tag do %>
+    <%= form_tag update_thrill_workout_session_path(@workout_session) do %>
     <strong><%= e[:e].name %></strong><br/>
     Repetitions: <%= text_field "exercise", "multiplier", {:value => e[:multiplier]}%>
     Value: <%= text_field "exercise", "value", {:value => e[:value]} %>

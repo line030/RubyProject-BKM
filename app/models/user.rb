@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
     has_many :aims
     has_many :exercises
     has_many :workout_days
+    has_many :points
   end
 
   def send_registration_mail
