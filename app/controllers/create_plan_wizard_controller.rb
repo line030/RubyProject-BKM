@@ -10,7 +10,6 @@
       case step
         when :add_plan
             @workout_plan = WorkoutPlan.new
-
       end
 
       case step

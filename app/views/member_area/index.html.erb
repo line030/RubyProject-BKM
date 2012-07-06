@@ -17,24 +17,25 @@
 
 <%if @aim.nil? %>
 
-    Hier kannst du ein Ziel definieren
+    <br/><p> Hier kannst du ein Ziel definieren
     <span style="font-size:36px;"><%= link_to ">ADD AIM!", new_aim_path %></span>
+   </p>
 
 <% else %>
-
-    <% puts "else" %>
 
     Aktuelles Ziel: <%= @aim.name %> <br/>
 
     <% if @aim.aim_progresses.empty? %>
 
-        Is Leer Hier kannste Ziel Loggen_
+        <br/>
+        <p>  Is Leer Hier kannste Ziel Loggen_
         <span style="font-size:36px;"><%= link_to ">ADD AIM-PROGRESS!", aim_path(@aim.id) %></span>
-
+        </p>
     <% else%>
 
-        Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
-
+        <br/>
+        <p>Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
+        <p/>
         <div id="chart_div"></div>
 
         Zielfortschritt Loggen !
@@ -42,21 +43,82 @@
 
     <% end %>
 
-    <!--Gewichtsverlauf mit Ziel (Möglichkeit Gewicht zu loggen)
-    -> Zielverlauf Möglichkeit Zielfortschirtt zu loggen  -->
-
 <% end %>
 
+<hr>
+
+<!-- Workout_Plan -->
+<span style="font-size:36px;">Trainingspläne<br/></span>
+
+<%if !@actual_workout_plan.nil? %>
+
+
+    <br/><p> Aktueller Trainingsplan: <%= link_to @actual_workout_plan.name, workout_plan_path(@actual_workout_plan.id)%></p>
+
+    <br/>
+    <!-- table -->
+    <p><table class="table table-condensed">
+      <thead>
+      <tr>
+        <th>Trainingstage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @actual_workout_plan.workout_days.each_with_index do |day| %>
+          <tr>
+            <td><%= link_to day.day , log_workout_path(:id => day.id)%></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <p/>
+
+<% else %>
+
+Der Wizzard:
+    <span style="font-size:36px;"><%= link_to ">Wizzard!", :do_wizzard %></span>
+
+<% end%>
 
 <hr>
-<br/>
+<!-- Workout_Sessions -->
+<span style="font-size:36px;">Trainings Sessions<br/></span>
+
+<%if !@actual_workout_session.nil? %>
+
+  <br/>
+    Letzte Trainings Session:
+  <br/>
+  <br/>
+    <!-- table -->
+    <p><table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>Datum</th>
+    <th>Trainingstag</th>
+  </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><%= link_to @actual_workout_session.date.strftime("%d.%m.%Y"), workout_session_path(@actual_workout_session.id) %></td>
+        <td><%=  @actual_workout_session.workout_day.day%></td>
+      </tr>
+  </tbody>
+</table>
+<% else %>
+    <br/>
+    Such dir ein Tag zum Loggen im > <span style="font-size:36px;"><%= link_to "Trainingsplanbereich !", workout_plans_path %>
+    </span>
+<% end%>
+
+<hr>
 
 
 Letztes Workout (übungen) -> Trendanzeige
 <br/>
 Trendtabelle
 <br/>
-Aktuell aktiver trainingsplan (Tage auflisten, danach link zum direkt loggen)
+
 
 
 <span style="font-size:36px;"><%= link_to "Log Workout Now!", new_workout_session_path %></span>

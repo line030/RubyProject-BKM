@@ -9,8 +9,14 @@ class MemberAreaController < ApplicationController
     @user = current_user
     @aim =  Aim.where("is_active=? and user_id=?",true, current_user.id).find_all().first
 
-    #render :text => aim.name,  :layout => false
+
+    @actual_workout_plan = WorkoutPlan.where("is_active=? and user_id=?",true, current_user.id).find_all().first
+
+    @actual_workout_session = WorkoutSession.where("user_id=?", current_user.id).order('date DESC').limit(1).find_all().first
+
+    #render :text => @actual_workout_session.date,  :layout => false
     #return
+
 
     respond_to do |format|
       format.html # index.html.erb
