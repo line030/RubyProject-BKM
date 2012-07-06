@@ -75,7 +75,6 @@ class WorkoutSessionsController < ApplicationController
 
   #POST /workout_sessions/1/update_thrill
   def create_thrills
-
     @workout_session = WorkoutSession.new
     @workout_session.user = current_user
 
@@ -84,25 +83,22 @@ class WorkoutSessionsController < ApplicationController
 
     @workout_session.date = params[:session][:date]
 
-    text = params.to_s
     params[:exercises].each_value do |e|
-      exercise = Exercise.find(e[:id])
-      @workout_session.exercises << exercise
+      e.each_value do |thrill|
+        exercise = Exercise.find(thrill[:id])
+        ewt = ExercisesWorkoutThrill.new
+        ewt.exercise = exercise
+        ewt.workout_session = @workout_session
+        ewt.multiplier = thrill[:multiplier]
+        ewt.value = thrill[:value]
+
+        if ewt.save
+          award_points_by_thrill(ewt)
+        end
+      end
 
     end
     @workout_session.save!
-
-    #now add the values to the thrill table...
-    thrills = ExercisesWorkoutThrill.find_all_by_workout_session_id(@workout_session.id)
-
-    thrills.each do |t|
-      valueMap = params[:exercises][t.exercise_id.to_s]
-      t.value = valueMap[:value]
-      t.multiplier = valueMap[:multiplier]
-      t.save!
-
-      award_points_by_thrill(t)
-    end
 
     respond_to do |format|
       format.html { redirect_to @workout_session, notice: 'Workout saved.' }

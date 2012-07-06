@@ -16,16 +16,16 @@
 
         <% @exercises.each do |e| %>
           <legend><%= e.name %></legend>
-          <div id="exercises_<%= e.id.to_s %>" class="thrill well">
+          <div id="exercises_<%= e.id.to_s %>_0" class="thrill well">
             <id><%= e.id.to_s %></id>
             <h3>Set 1</h3>
             <div class="close">&times;</div>
-            <%= label_tag 'exercises['+e.id.to_s+']_multiplier', 'Wdh.', :class => 'control-label' %>
-            <%= hidden_field 'exercises['+e.id.to_s+']', 'id', {:value => e.id}%>
-            <%= hidden_field 'exercises['+e.id.to_s+']', 'thrillNumber', {:value => 0}%>
-            <%= text_field 'exercises['+e.id.to_s+']', 'multiplier', {:value => e[:multiplier], :class => 'input-xlarge'} %>
-            <%= label_tag 'exercises['+e.id.to_s+']_value', 'Value', :class => 'control-label', :style => 'width:80px' %>
-            <%= text_field 'exercises['+e.id.to_s+']', 'value', {:value => e[:value], :class => 'input-xlarge'} %>
+            <%= label_tag 'exercises['+e.id.to_s+']_0_multiplier', 'Wdh.', :class => 'control-label' %>
+            <%= hidden_field 'exercises['+e.id.to_s+'][0]', 'id', {:value => e.id}%>
+            <%= hidden_field 'exercises['+e.id.to_s+'][0]', 'thrillNumber', {:value => 0}%>
+            <%= text_field 'exercises['+e.id.to_s+'][0]', 'multiplier', {:value => e[:multiplier], :class => 'input-xlarge trigger_next'} %>
+            <%= label_tag 'exercises['+e.id.to_s+']_0_value', 'Value', :class => 'control-label', :style => 'width:80px' %>
+            <%= text_field 'exercises['+e.id.to_s+'][0]', 'value', {:value => e[:value], :class => 'input-xlarge trigger_next'} %>
           </div>
         <% end %>
         <div class="form-actions">
@@ -40,29 +40,74 @@
           dateFormat : 'dd.mm.yy'
       });
 
-      $("input").focus(function (e) {
+      registerChangeEvents();
+
+  });
+
+  function registerChangeEvents() {
+      $(".trigger_next").unbind("keyup");
+      $(".trigger_next").keyup(function (e) {
           var parent = $(e.currentTarget.parentElement);
-          var thrill_nr = 1 + parseInt($("#"+parent.attr("id")+"_thrillNumber").val());
           var exercise_id = parent.find("id").html();
 
-          var toAppend_id = "exercises_"+ exercise_id + "_" + thrill_nr;
+          var thrill_nr = 0
+          if (parent.attr("id") != "exercises_" + exercise_id + "_0")
+            thrill_nr = parseInt($("#"+parent.attr("id")+"_thrillNumber").val());
 
-          if ($("#" + toAppend_id).length == 0) {
-              var toAppend = $("<div>").attr("id", toAppend_id).addClass("thrill well");
-              //toAppend.append("<div>").addClass("thrill well");
-              toAppend.append($("<id>").html(exercise_id));
-              toAppend.append($('<h3>').html('Set ' + (thrill_nr+1)));
-              toAppend.append($('<div>').addClass("close").html("&times;"));
-              toAppend.append($('<label>')
-                      .addClass("control-label")
-                      .attr("for", "exercises_" + exercise_id + "_" + thrill_nr + "_multiplier")
-                      .html("Wdh."));
-              toAppend.append($('<input>'))
+          var prefix_id_selector = "exercises_" + exercise_id + "_" + thrill_nr;
 
-              $(e.currentTarget.parentElement).after(toAppend);
-              console.log(toAppend);
+          if ($("#"+prefix_id_selector+"_multiplier").val().length > 0 && $("#"+prefix_id_selector+"_value").val().length > 0) {
+              showNextThrill(parent, exercise_id, (thrill_nr+1));
           }
-
       });
-  });
+  }
+
+
+    function showNextThrill(parent, exercise_id, thrill_nr) {
+
+        var toAppend_id = "exercises_"+ exercise_id + "_" + thrill_nr;
+
+        if ($("#" + toAppend_id).length == 0) {
+            var label_multiplier_selector = "exercises_" + exercise_id + "_" + (thrill_nr-1) + "_multiplier";
+            var label_multiplier = "exercises_" + exercise_id + "_" + thrill_nr + "_multiplier";
+
+            var label_value_selector = "exercises_" + exercise_id + "_" + (thrill_nr-1) + "_value";
+            var label_value = "exercises_" + exercise_id + "_" + thrill_nr + "_value";
+
+            var prefix_id_selector = "exercises_" + exercise_id + "_" + (thrill_nr-1);
+            var prefix_id = "exercises_" + exercise_id + "_" + thrill_nr;
+            var prefix_name = "exercises[" + exercise_id + "][" + thrill_nr + "]";
+
+            var toAppend = parent.clone()
+            toAppend.attr("id", toAppend_id);
+            toAppend.find("h3").html("Set " + (thrill_nr+1));
+            toAppend.find("label[for='" + label_multiplier_selector + "']")
+                    .attr("for", label_multiplier);
+            toAppend.find("#" + prefix_id_selector + "_id")
+                    .attr("id", prefix_id + "_id")
+                    .attr("name", prefix_name + "[id]")
+            toAppend.find("#" + prefix_id_selector + "_thrillNumber")
+                    .attr("id", prefix_id + "_thrillNumber")
+                    .attr("name", prefix_name + "[thrillNumber]")
+                    .val(thrill_nr);
+            toAppend.find("#" + prefix_id_selector + "_multiplier")
+                    .attr("id", prefix_id + "_multiplier")
+                    .attr("name", prefix_name + "[multiplier]")
+                   // .attr("placeholder",
+                   //     $("#" + prefix_id_selector + "_multiplier").val())
+                    .val("");
+            toAppend.find("label[for='" + label_value_selector + "']")
+                    .attr("for", label_value);
+            toAppend.find("#" + prefix_id_selector + "_value")
+                    .attr("id", prefix_id + "_value")
+                    .attr("name", prefix_name + "[value]")
+                   // .attr("placeholder",
+                   //     $("#" + prefix_id_selector + "_value").val())
+                    .val("");
+
+            parent.after(toAppend);
+            registerChangeEvents();
+            console.log(toAppend);
+        }
+    };
 </script>
