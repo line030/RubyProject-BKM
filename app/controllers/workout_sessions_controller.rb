@@ -27,20 +27,33 @@ class WorkoutSessionsController < ApplicationController
       return
     end
 
-
+    exercises = @workout_session.exercises
     exerciseWorkoutThrills = @workout_session.exercises_workout_thrills
 
-    if @workout_session.workout_day.nil?
-        @day = "No Training Day in WorkOut Session"
-      else
-        @day = @workout_session.workout_day.day
+    @exerciseList = Hash.new
+    exercises.each do |e|
+      if !@exerciseList.has_key?(e)
+        @exerciseList[e] = []
+      end
+    end
+    exerciseWorkoutThrills.each do |ewt|
+      @exerciseList[ewt.exercise] << {:id => ewt.id, :multiplier => ewt.multiplier, :value => ewt.value}
     end
 
+    #render :text => @exerciseList.as_json.to_s, :layout => false
+    #return
 
-    @exercises = []
-    exerciseWorkoutThrills.each do |e|
-      @exercises << {:e => e.exercise, :id => e.id, :value => e.value, :multiplier => e.multiplier}
-    end
+    #if @workout_session.workout_day.nil?
+    #    @day = "No Training Day in WorkOut Session"
+    #  else
+    #    @day = @workout_session.workout_day.day
+    #end
+
+
+    #@exercises = []
+    #exerciseWorkoutThrills.each do |e|
+    #  @exercises << {:e => e.exercise, :id => e.id, :value => e.value, :multiplier => e.multiplier}
+    #end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -117,19 +130,6 @@ class WorkoutSessionsController < ApplicationController
     end
   end
 
-  # GET /workout_sessions/new
-  # GET /workout_sessions/new.json
-  def new
-    @workout_session = WorkoutSession.new
-
-    assign_workout_days_selection_list
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @workout_session }
-    end
-  end
-
   #GET /workout_plan/log/:id
   def log_workout
     @workout_day = WorkoutDay.find(params[:id])
@@ -152,42 +152,6 @@ class WorkoutSessionsController < ApplicationController
     assign_workout_days_selection_list
   end
 
-  # POST /workout_sessions
-  # POST /workout_sessions.json
-  def create
-    render :text => params.to_s, :layout => false
-    return
-
-    @workout_session = WorkoutSession.new(params[:workout_session])
-    @workout_session.user = current_user
-
-    workout_day_id = params[:workout_day][:id]    # fehler :(
-
-    # if the selected workoutDay is null
-    if (workout_day_id.empty? ) #workout_day_id.nil? ||
-         @workout_session.workout_day = nil
-
-    else
-      workout_day = WorkoutDay.find(workout_day_id)
-      @workout_session.workout_day = workout_day
-
-      workout_day.exercises.each { |e|
-        @workout_session.exercises << e
-      }
-
-    end
-
-    respond_to do |format|
-      if @workout_session.save
-        format.html { redirect_to @workout_session, notice: 'Workout session was successfully created.' }
-        format.json { render json: @workout_session, status: :created, location: @workout_session }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @workout_session.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # PUT /workout_sessions/1
   # PUT /workout_sessions/1.json
   def update
@@ -197,8 +161,28 @@ class WorkoutSessionsController < ApplicationController
       return
     end
 
+    @workout_session = WorkoutSession.find(params[:id])
+
+    @workout_session.date = params[:session][:date]
+
+    params[:exercises].each_value do |e|
+      e.each_value do |thrill|
+        exercise = Exercise.find(thrill[:id])
+        ewt = ExercisesWorkoutThrill.find(thrill[:thrill_id])
+        ewt.multiplier = thrill[:multiplier]
+        ewt.value = thrill[:value]
+
+        ewt.save!
+          # TODO: recalculate points...
+          #award_points_by_thrill(ewt)
+        #end
+      end
+
+    end
+    @workout_session.save!
+
     respond_to do |format|
-      if @workout_session.update_attributes(params[:workout_session])
+      if @workout_session.save!
         format.html { redirect_to @workout_session, notice: 'Workout session was successfully updated.' }
         format.json { head :no_content }
       else
