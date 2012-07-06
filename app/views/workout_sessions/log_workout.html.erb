@@ -1,20 +1,68 @@
 <h1>Log Workout</h1>
-<%= @workout_session.attributes.as_json %>
-
-<%= form_for(@workout_session) do |f| %>
-    <div class="field">
-      <%= f.label :date %><br />
-      <%= f.datetime_select :date %>
+<div class="span4 well pull-right">
+    <div class="nav nav-list">
+      <div class="nav-header">
+        Log your Progress as often as you can!
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet, consecur
+      </p>
     </div>
+</div>
+<%= form_tag create_thrills_workout_session_path, :method => :post, :class => 'form-horizontal' do %>
+    <fieldset>
+      <legend>Pick a Date:</legend>
+      <%= text_field 'session', 'date', :value => Time.now.strftime("%d.%m.%Y") %>
 
-    <% @workout_session.exercises.each do |e| %>
-        <strong><%= e.name %></strong>
-        <div class="field">
-            <%= label_tag 'exercise[multiplier]', 'Wdh.' %>
-            <%= text_field 'exercise['+e.id.to_s+']', 'multiplier', {:value => e[:multiplier]} %>
-            <%= label_tag 'exercise[value]', 'Value' %>
-            <%= text_field 'exercise['+e.id.to_s+']', 'value', {:value => e[:value]} %>
-
+        <% @exercises.each do |e| %>
+          <legend><%= e.name %></legend>
+          <div id="exercises_<%= e.id.to_s %>" class="thrill well">
+            <id><%= e.id.to_s %></id>
+            <h3>Set 1</h3>
+            <div class="close">&times;</div>
+            <%= label_tag 'exercises['+e.id.to_s+']_multiplier', 'Wdh.', :class => 'control-label' %>
+            <%= hidden_field 'exercises['+e.id.to_s+']', 'id', {:value => e.id}%>
+            <%= hidden_field 'exercises['+e.id.to_s+']', 'thrillNumber', {:value => 0}%>
+            <%= text_field 'exercises['+e.id.to_s+']', 'multiplier', {:value => e[:multiplier], :class => 'input-xlarge'} %>
+            <%= label_tag 'exercises['+e.id.to_s+']_value', 'Value', :class => 'control-label', :style => 'width:80px' %>
+            <%= text_field 'exercises['+e.id.to_s+']', 'value', {:value => e[:value], :class => 'input-xlarge'} %>
+          </div>
+        <% end %>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-    <% end %>
+    </fieldset>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $("#session_date").datepicker({
+          dateFormat : 'dd.mm.yy'
+      });
+
+      $("input").focus(function (e) {
+          var parent = $(e.currentTarget.parentElement);
+          var thrill_nr = 1 + parseInt($("#"+parent.attr("id")+"_thrillNumber").val());
+          var exercise_id = parent.find("id").html();
+
+          var toAppend_id = "exercises_"+ exercise_id + "_" + thrill_nr;
+
+          if ($("#" + toAppend_id).length == 0) {
+              var toAppend = $("<div>").attr("id", toAppend_id).addClass("thrill well");
+              //toAppend.append("<div>").addClass("thrill well");
+              toAppend.append($("<id>").html(exercise_id));
+              toAppend.append($('<h3>').html('Set ' + (thrill_nr+1)));
+              toAppend.append($('<div>').addClass("close").html("&times;"));
+              toAppend.append($('<label>')
+                      .addClass("control-label")
+                      .attr("for", "exercises_" + exercise_id + "_" + thrill_nr + "_multiplier")
+                      .html("Wdh."));
+              toAppend.append($('<input>'))
+
+              $(e.currentTarget.parentElement).after(toAppend);
+              console.log(toAppend);
+          }
+
+      });
+  });
+</script>
