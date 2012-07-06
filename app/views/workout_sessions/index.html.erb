@@ -5,14 +5,12 @@
     <th>Date</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @workout_sessions.each do |workout_session| %>
   <tr>
     <td><%= workout_session.date %></td>
     <td><%= link_to 'Show', workout_session %></td>
-    <td><%= link_to 'Edit', edit_workout_session_path(workout_session) %></td>
     <td><%= link_to 'Destroy', workout_session, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
@@ -20,4 +18,4 @@
 
 <br />
 
-<%= link_to 'New Workout session', new_workout_session_path %>
+<%= link_to 'New Workout session', workout_plans_path %>
