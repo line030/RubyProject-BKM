@@ -46,7 +46,8 @@ BodykitMe::Application.routes.draw do
 
   resources :workout_sessions do
     member do
-      post 'update_thrill'
+      post 'update_session'
+      post 'create_thrills'
     end
   end
   

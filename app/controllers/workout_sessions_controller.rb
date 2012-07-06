@@ -50,6 +50,8 @@ class WorkoutSessionsController < ApplicationController
 
   #POST /workout_sessions/1/update_thrill
   def update_thrill
+      render :text => params.to_s, :layout => false
+      return
       @workout_session = WorkoutSession.find(params[:id])
 
       joinedExercise = ExercisesWorkoutThrill.find(params[:exercise][:exerciseWorkoutThrillsId])
@@ -71,6 +73,54 @@ class WorkoutSessionsController < ApplicationController
 
   end
 
+  #POST /workout_sessions/1/update_thrill
+  def create_thrills
+
+    @workout_session = WorkoutSession.new
+    @workout_session.user = current_user
+
+    workout_day = WorkoutDay.find(params[:id])
+    @workout_session.workout_day = workout_day
+
+    @workout_session.date = params[:session][:date]
+
+    text = params.to_s
+    params[:exercises].each_value do |e|
+      exercise = Exercise.find(e[:id])
+      @workout_session.exercises << exercise
+
+    end
+    @workout_session.save!
+
+    #now add the values to the thrill table...
+    thrills = ExercisesWorkoutThrill.find_all_by_workout_session_id(@workout_session.id)
+
+    thrills.each do |t|
+      valueMap = params[:exercises][t.exercise_id.to_s]
+      t.value = valueMap[:value]
+      t.multiplier = valueMap[:multiplier]
+      t.save!
+
+      award_points_by_thrill(t)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @workout_session, notice: 'Workout saved.' }
+      format.json { render json: @workout_session }
+    end
+
+  end
+
+  def award_points_by_thrill(t)
+    #count points if value && multiplier != nil
+    if (!t.value.nil? && !t.multiplier.nil?)
+      pointsAwarded = 1
+      pointsAwarded = t.exercise.points if !t.exercise.points.nil?
+      t.points << Point.create(:value => pointsAwarded, :user => current_user)
+      t.save!
+    end
+  end
+
   # GET /workout_sessions/new
   # GET /workout_sessions/new.json
   def new
@@ -86,17 +136,12 @@ class WorkoutSessionsController < ApplicationController
 
   #GET /workout_plan/log/:id
   def log_workout
-    @workout_session = WorkoutSession.new
-    @workout_session.user = current_user
-
     @workout_day = WorkoutDay.find(params[:id])
 
-    @workout_session.workout_day = @workout_day
-    @workout_session.exercises = @workout_day.exercises
+    @exercises = @workout_day.exercises
 
     respond_to do |format|
       format.html # log_workout.html.erb
-      format.json { render json: @workout_session }
     end
   end
 
@@ -174,6 +219,13 @@ class WorkoutSessionsController < ApplicationController
     if !user_is_allowed?(@workout_session)
       redirect_to workout_sessions_path
       return
+    end
+    thrills = @workout_session.exercises_workout_thrills
+    thrills.each do |t|
+      puts "Fuck you!!! " + t.points.as_json.to_s
+      t.points.each do |p|
+        p.destroy
+      end
     end
     @workout_session.destroy
 
