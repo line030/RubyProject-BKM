@@ -11,53 +11,85 @@
 
 <hr>
 
-<!-- Ziele -->
+  <div class="row-fluid">
+    <div class="span6">
+        <div class="well">
+          <!-- Ziele -->
+          <span style="font-size:36px;">Ziele <br/></span>
 
-<span style="font-size:36px;">Ziele <br/></span>
+          <%if @aim.nil? %>
 
-<%if @aim.nil? %>
-
-    <br/><p> Hier kannst du ein Ziel definieren
-    <span style="font-size:36px;"><%= link_to ">ADD AIM!", new_aim_path %></span>
-   </p>
-
-<% else %>
-
-    Aktuelles Ziel: <%= @aim.name %> <br/>
-
-    <% if @aim.aim_progresses.empty? %>
-
-        <br/>
-        <p>  Is Leer Hier kannste Ziel Loggen_
-        <span style="font-size:36px;"><%= link_to ">ADD AIM-PROGRESS!", aim_path(@aim.id) %></span>
-        </p>
-    <% else%>
-
-        <br/>
-        <p>Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
-        <p/>
-        <div id="chart_div"></div>
-
-        Zielfortschritt Loggen !
-        <span style="font-size:36px;"><%= link_to ">ADD AIM-PROGRESS!", aim_path(@aim.id) %></span>
-
-    <% end %>
-
-<% end %>
-
-<hr>
-
-<!-- Workout_Plan -->
-<span style="font-size:36px;">Trainingspläne<br/></span>
-
-<%if !@actual_workout_plan.nil? %>
+              <br/><p> Hier kannst du ein
+                <%= link_to "Ziel definieren", new_aim_path %>.
 
 
-    <br/><p> Aktueller Trainingsplan: <%= link_to @actual_workout_plan.name, workout_plan_path(@actual_workout_plan.id)%></p>
+          <% else %>
 
-    <br/>
-    <!-- table -->
-    <p><table class="table table-condensed">
+              Aktuelles Ziel: <%= @aim.name %> <br/>
+
+              <% if @aim.aim_progresses.empty? %>
+
+                  <br/>
+                  <p>  Du hast keine geloggten Zielfortschritte!<br/>
+                       Lege jetzt ein <%= link_to "Zielfortschritt", aim_path(@aim.id) %>an.
+                  </p>
+              <% else%>
+
+                  <br/>
+                  <p>Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
+                  <p/>
+                  <div id="chart_div"></div>
+
+                  Leg ein weiteren <%= link_to "Zielfortschritt", aim_path(@aim.id) %> an.
+              <% end %>
+
+          <% end %>
+        </div>
+      <div class="well">
+        <!-- Workout_Sessions -->
+        <span style="font-size:36px;">Trainings Sessions<br/></span>
+
+        <%if !@actual_workout_session.nil? %>
+
+            <br/>
+            Letzte Trainings Session:
+            <br/>
+            <br/>
+            <!-- table -->
+            <p><table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Trainingstag</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><%= link_to @actual_workout_session.date.strftime("%d.%m.%Y"), workout_session_path(@actual_workout_session.id) %></td>
+          <td><%=  @actual_workout_session.workout_day.day%></td>
+        </tr>
+        </tbody>
+      </table>
+        <% else %>
+            <br/>
+            Suche dir ein Tag im <%= link_to "Trainingsplan-Bereich!", workout_plans_path %> aus.
+        <% end%>
+
+
+      </div>
+    </div>
+    <div class="well span6">
+      <!-- Workout_Plan -->
+      <span style="font-size:36px;">Trainingspläne<br/></span>
+
+      <%if !@actual_workout_plan.nil? %>
+
+
+          <br/><p> Aktueller Trainingsplan: <%= link_to @actual_workout_plan.name, workout_plan_path(@actual_workout_plan.id)%></p>
+
+          <br/>
+          <!-- table -->
+          <p><table class="table table-condensed">
       <thead>
       <tr>
         <th>Trainingstage</th>
@@ -71,67 +103,30 @@
       <% end %>
       </tbody>
     </table>
-    <p/>
+          <p/>
 
-<% else %>
+      <% else %>
 
-Der Wizzard:
-    <span style="font-size:36px;"><%= link_to ">Wizzard!", :do_wizzard %></span>
+          Der Wizzard:
+          <%= link_to ">Wizzard!", :do_wizzard %>
 
-<% end%>
+      <% end%>
+  </div>
+  </div>
 
-<hr>
-<!-- Workout_Sessions -->
-<span style="font-size:36px;">Trainings Sessions<br/></span>
-
-<%if !@actual_workout_session.nil? %>
-
-  <br/>
-    Letzte Trainings Session:
-  <br/>
-  <br/>
-    <!-- table -->
-    <p><table class="table table-condensed">
-  <thead>
-  <tr>
-    <th>Datum</th>
-    <th>Trainingstag</th>
-  </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><%= link_to @actual_workout_session.date.strftime("%d.%m.%Y"), workout_session_path(@actual_workout_session.id) %></td>
-        <td><%=  @actual_workout_session.workout_day.day%></td>
-      </tr>
-  </tbody>
-</table>
-<% else %>
-    <br/>
-    Such dir ein Tag zum Loggen im > <span style="font-size:36px;"><%= link_to "Trainingsplanbereich !", workout_plans_path %>
-    </span>
-<% end%>
-
-<hr>
-
-
-Letztes Workout (übungen) -> Trendanzeige
-<br/>
-Trendtabelle
-<br/>
-
-
-
-<span style="font-size:36px;"><%= link_to "Log Workout Now!", new_workout_session_path %></span>
+<!--<span style="font-size:36px;"><%= link_to "Log Workout Now!", new_workout_session_path %></span>
 <p>What can I do further?</p>
 <p>Statistics, Aims, Progress, etc...</p>
-
+-->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript">
 
         google.load("visualization", "1", {packages:["corechart"]});
 
-        <% if !@aim.nil? %>
+        <% if !@aim.nil?
+
+        %>
         google.setOnLoadCallback(drawChart);
 
 
@@ -145,7 +140,7 @@ Trendtabelle
                         index = 0
                     %>
 
-                    <% @aim.aim_progresses.each do | pro | %>
+                    <% @aimpro.each do | pro | %>
 
                       <%if index < size %>
                         ['<%= pro.logging_date.strftime("%d.%m.%Y") %>',  <%= pro.value %>,  <%= @aim.value %>],
