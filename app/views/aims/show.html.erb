@@ -18,21 +18,31 @@
       end
   %>
 </p>
-
+<hr>
 <p>
   <b>Aim Progresses:</b>
+  <% if !(@aim.aim_progresses.nil?)  %>
 
-  <% if !(@aim.aim_progresses.nil?)
-
-        @aim.aim_progresses.each do | pro |%>
-
-        <br/>
-
-        <%= pro.id %>
-
-       <% end %>
+      <!-- table -->
+    <table class="table table-condensed">
+      <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @aim.aim_progresses.each_with_index do |pro| %>
+          <tr>
+            <td><%= link_to pro.logging_date.strftime("%d.%m.%Y") , edit_aim_progress_path(:id => pro.id)%></td>
+            <td><%= pro.value %> <%= @aim.category.unit.name %> </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
 
   <% end %>
+
 </p>
 
 <hr>

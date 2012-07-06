@@ -1,46 +1,89 @@
-<h1>Listing aims</h1>
+<h1>Aims</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Value</th>
-    <th>Einheit</th>
-    <th>Category</th>
-    <th>is_active?</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<% @aims.each_with_index do |aim, index| %>
+    <div class=" alert  <%= "alert-success" if aim.is_active?%>">
 
-<% @aims.each do |aim| %>
-  <tr>
-    <td><%= aim.name %></td>
-    <td><%= aim.value %></td>
-    <td>
-    <% if !aim.category.nil? %>
-        <%= aim.category.unit.name %>
-    <% else %>
-      <%= "No Unit" %>
-    <% end %></td>
-    <td>
-      <% if !aim.category.nil? %>
-        <%= aim.category.name %>
+      <% if aim.is_active? %>
+          <%= button_to 'Deactivate Plan', invert_active_aim_path(aim), method: :put, class: 'btn btn-danger pull-right' %>
       <% else %>
-          <%= "No Category" %>
+          <%= button_to 'Activate Plan', invert_active_aim_path(aim), method: :put, class: 'btn btn-success pull-right' %>
+      <% end %>
+
+      <h2>
+        <%= link_to aim.name, aim %>
+        <a href="#" data-toggle="collapse" data-target="#details-<%= index.to_s%>" onclick="changeToggle('',<%=index%>);return false">
+          <%
+             toggleState = 'toggleDown'
+             if aim.is_active?
+               toggleState = 'toggleUp'
+             end
+          %>
+          <span id="toggler-<%=index%>" class="<%=toggleState%>"></span>
+        </a>
+      </h2>
+
+      <div id="details-<%= index.to_s%>" class="collapse <%= 'in' if aim.is_active?%>">
+        <% if aim.aim_progresses.empty? %>
+            <p>No Progresses added yet. <%= link_to 'Add Progress now!', aim  %></p>
+        <% else %>
+            <!-- table -->
+            <table class="table table-condensed">
+              <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Value</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% aim.aim_progresses.each_with_index do |pro| %>
+                  <tr>
+                  <td><%= link_to pro.logging_date.strftime("%d.%m.%Y") , edit_aim_progress_path(:id => pro.id)%></td>
+                  <td><%= pro.value %> <%= aim.category.unit.name %> </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+
+
+           <!-- <% aim.aim_progresses.each_with_index do |pro, index| %>
+                <div class="well" style="float:left;width:250px;color:black;margin-right:6px;">
+                  <a href="<%= aim_progress_path(:id => pro.id)%>"
+                     class="btn pull-right log-workout-tip <%= "disabled" if !aim.is_active? %>"
+                     rel="tooltip" title="Log your workout for <%= pro.id %>">
+                    <i class="icon-edit"></i>
+                  </a>
+                  <h3><%= pro.id %></h3>
+                </div>
+            <% end %>
+            -->
+
+                <% if ((index+1) % 3) == 0 %>
+                    <div class="clearfix"></div>
+                <% end %>
         <% end %>
-    </td>
-    <td>
-      <%= aim.is_active?%>
-    </td>
+        <div class="clearfix"></div>
 
-    <td><%= link_to 'Activate', invert_active_aim_path(aim), :method => 'put'%></td>
-    <td><%= link_to 'Show', aim %></td>
-    <td><%= link_to 'Edit', edit_aim_path(aim) %></td>
-    <td><%= link_to 'Destroy', aim, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+      </div>
+    </div>
 <% end %>
-</table>
 
-<br />
+<hr/>
+<%= link_to 'CREATE NEW AIM', new_aim_path %>
 
-<%= link_to 'New Aim', new_aim_path %>
+<script type="text/javascript">
+    function changeToggle(prefix, i) {
+        if(prefix != "") {
+            prefix = prefix + "-"
+        }
+        elem = $("#toggler-" + prefix + i);
+        if (elem.hasClass("toggleUp")) {
+            elem.attr("class", "toggleDown")
+        } else {
+            elem.attr("class", "toggleUp")
+        }
+    };
+
+    $(document).ready(function() {
+        $(".log-workout-tip").tooltip({delay: { show: 1000, hide: 100 }});
+    });
+</script>

@@ -1,7 +1,110 @@
 <div class="dashboard-points pull-right"><p><%= current_points %></p></div>
 <h2>Dashboard</h2>
 <p id="notice"><%= notice %></p>
-<p>Here comes the Dashboard...</p>
+
+<br/>
+<p>Yo,
+<span style="font-size:36px;">  <%= @user.login %> </span>
+  ... Zeit für etwas Training!
+</p>
+<br/>
+
+<hr>
+
+<!-- Ziele -->
+
+<span style="font-size:36px;">Ziele <br/></span>
+
+<%if @aim.nil? %>
+
+    Hier kannst du ein Ziel definieren
+    <span style="font-size:36px;"><%= link_to ">ADD AIM!", new_aim_path %></span>
+
+<% else %>
+
+    <% puts "else" %>
+
+    Aktuelles Ziel: <%= @aim.name %> <br/>
+
+    <% if @aim.aim_progresses.empty? %>
+
+        Is Leer Hier kannste Ziel Loggen_
+        <span style="font-size:36px;"><%= link_to ">ADD AIM-PROGRESS!", aim_path(@aim.id) %></span>
+
+    <% else%>
+
+        Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
+
+        <div id="chart_div"></div>
+
+        Zielfortschritt Loggen !
+        <span style="font-size:36px;"><%= link_to ">ADD AIM-PROGRESS!", aim_path(@aim.id) %></span>
+
+    <% end %>
+
+    <!--Gewichtsverlauf mit Ziel (Möglichkeit Gewicht zu loggen)
+    -> Zielverlauf Möglichkeit Zielfortschirtt zu loggen  -->
+
+<% end %>
+
+
+<hr>
+<br/>
+
+
+Letztes Workout (übungen) -> Trendanzeige
+<br/>
+Trendtabelle
+<br/>
+Aktuell aktiver trainingsplan (Tage auflisten, danach link zum direkt loggen)
+
+
 <span style="font-size:36px;"><%= link_to "Log Workout Now!", new_workout_session_path %></span>
 <p>What can I do further?</p>
 <p>Statistics, Aims, Progress, etc...</p>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript">
+
+        google.load("visualization", "1", {packages:["corechart"]});
+
+        <% if !@aim.nil? %>
+        google.setOnLoadCallback(drawChart);
+
+
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Date', '<%=@aim.category.unit.name%>', 'Ziel: <%=@aim.category.unit.name%>'],
+
+                    <%
+                        size = @aim.aim_progresses.size
+                        index = 0
+                    %>
+
+                    <% @aim.aim_progresses.each do | pro | %>
+
+                      <%if index < size %>
+                        ['<%= pro.logging_date.strftime("%d.%m.%Y") %>',  <%= pro.value %>,  <%= @aim.value %>],
+                      <% else %>
+                        ['<%= pro.logging_date.strftime("%d.%m.%Y") %>',  <%= pro.value %>,  <%= @aim.value %>]
+
+                        <% index =+ index %>
+                       <% end %>
+                <% end %>
+
+
+            ]);
+
+            var options = {
+                title: 'Ziel: <%= @aim.name %>, Category: <%= @aim.category.name %>'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        <% end %>
+
+</script>

@@ -18,16 +18,27 @@
 
     <div class="field">
       <%= f.label :logging_date %><br />
-      <%= f.date_select :logging_date %>
+      <%= f.text_field :logging_date %>
     </div>
 
-   <div class="field">
+   <!--<div class="field">
       <%= f.label :aim_id %><br />
       <%= select("aim_progress", "aim_id", @aim_selection_list,
                  {:prompt =>  "Select Aim"  } ) %>
    </div>
-
+   -->
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#aim_progress_logging_date").datepicker({
+            setDate: new Date(),
+            dateFormat : 'dd.mm.yy'
+        })
+
+    });
+
+</script>

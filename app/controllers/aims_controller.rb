@@ -146,6 +146,12 @@ class AimsController < ApplicationController
     end
   end
 
+  #TO:DO
+  #def de_active
+  # // nur einer is  true oder keiner!
+  #end
+
+
   def add_new_aim_pro
     @aim = Aim.find(params[:id])
 
@@ -171,9 +177,23 @@ class AimsController < ApplicationController
     end
 
     redirect_to aim_path()
-
-
   end
 
+  def invert_active
+    @aim = Aim.find(params[:id])
+
+
+    @aim.is_active = !@aim.is_active?
+
+    #render :text => @aim.name, :layout => false
+    #return
+
+    @aim.save!
+
+    respond_to do |format|
+      format.html { redirect_to aims_path, notice: 'Successfully de-/activated' }
+      format.json { render json: @aim, status: :created, location: @aim }
+    end
+  end
 
 end

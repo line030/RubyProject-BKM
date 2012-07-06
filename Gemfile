@@ -62,3 +62,5 @@ gem 'less-rails-bootstrap'
 gem 'therubyracer' #for usage of LESS
 
 gem 'wicked'
+
+
