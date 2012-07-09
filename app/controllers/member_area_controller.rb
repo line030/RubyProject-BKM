@@ -9,7 +9,7 @@ class MemberAreaController < ApplicationController
     @user = current_user
     @aim =  Aim.where("is_active=? and user_id=?",true, current_user.id).find_all().first
 
-    if !@aim.aim_progresses.nil?
+    if !@aim.nil? && !@aim.aim_progresses.nil?
 
       @aimpro = AimProgress.where("aim_id=?", @aim.id).order('logging_date ASC').all
     end
