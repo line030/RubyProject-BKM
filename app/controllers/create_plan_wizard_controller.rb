@@ -1,6 +1,6 @@
   class CreatePlanWizardController < Wicked::WizardController
 
-    #before_filter :authenticate
+    before_filter :authenticate
 
     steps :add_plan, :add_day, :add_exercise
     # ....
@@ -47,7 +47,6 @@
             @workout_plan.save!
             render_wizard @workout_plan
           end
-
 
       end
 
@@ -167,7 +166,6 @@
       # zum speichern des neuen Trainingstages
 
       @exercise = Exercise.find_by_id(params[:exercise][:id])
-
 
       #render :text => @exercise.description, :layout => false
       #return
