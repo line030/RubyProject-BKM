@@ -1,9 +1,9 @@
 set :application, "BodyKit.Me"
-set :deploy_to "var/www/bkm/"
+set :deploy_to, "/var/www/bkm/"
 set :rails_env, "production"
 
 set :user, "app_deployer"
-set :use_sudo, "false"
+set :use_sudo, false
 ssh_options[:paranoid] = false;
 
 set :domain, "www.line030.de"
@@ -19,7 +19,6 @@ set :scm, :git
 set :repository,  "git@github.com:line030/RubyProject-BKM.git"
 set :branch, "master"
 set :deploy_via, :remote_cache
-set :scm_command, "/usr/bin/git"
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
