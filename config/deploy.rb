@@ -1,13 +1,25 @@
 set :application, "BodyKit.Me"
-set :repository,  "git@github.com:line030/RubyProject-BKM.git"
+set :deploy_to "var/www/bkm/"
+set :rails_env, "production"
 
-set :scm, :git
+set :user, "app_deployer"
+set :use_sudo, "false"
+ssh_options[:paranoid] = false;
+
+set :domain, "www.line030.de"
+
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "www.line030.de:3000"                          # Your HTTP server, Apache/etc
-role :app, "www.line030.de:3000"                          # This may be the same as your `Web` server
-role :db,  "www.line030.de:3000", :primary => true # This is where Rails migrations will run
+role :web, domain                          # Your HTTP server, Apache/etc
+role :app, domain                          # This may be the same as your `Web` server
+role :db,  domain, :primary => true # This is where Rails migrations will run
 #role :db,  "your slave db-server here"
+
+set :scm, :git
+set :repository,  "git@github.com:line030/RubyProject-BKM.git"
+set :branch, "master"
+set :deploy_via, :remote_cache
+set :scm_command, "/usr/bin/git"
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
