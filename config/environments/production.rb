@@ -61,6 +61,23 @@ BodykitMe::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+  #config.action_mailer.delivery_method = :letter_opener
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      :address              => "mail.line030.de",
+      :port                 => 25,
+      :domain               => 'line030.de',
+      :user_name            => 'bodykit-dev@line030.de',
+      :password             => 'peter',
+      :authentication       => 'plain',
+      :enable_starttls_auto => false ,
+      :openssl_verify_mode => 'none'
+
+  }
+
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
