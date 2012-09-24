@@ -6,7 +6,7 @@ set :user, "app_deployer"
 set :use_sudo, false
 ssh_options[:paranoid] = false;
 
-set :domain, "www.line030.de/bkm/"
+set :domain, "www.line030.de"
 
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
