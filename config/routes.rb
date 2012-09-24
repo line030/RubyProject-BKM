@@ -12,7 +12,7 @@ BodykitMe::Application.routes.draw do
 
   match 'workout_plan/log/:id' => 'workout_sessions#log_workout', :as => :log_workout
 
-  match 'plan_wizard' => 'create_plan_wizard#show', :as => :do_wizzard
+  #match 'create_plan_wizard' => 'create_plan_wizard#show', :as => :do_wizzard
 
   resources :points
 
