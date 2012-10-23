@@ -236,7 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
-  authlogic
+  authlogic (= 3.1.0)
   capistrano
   coffee-rails (~> 3.2.1)
   cucumber
