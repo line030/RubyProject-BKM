@@ -1,6 +1,7 @@
 set :application, "BodyKit.Me"
 set :deploy_to, "/var/www/bkm/"
 set :rails_env, "production"
+set :normalize_asset_timestamps, false
 
 set :user, "app_deployer"
 set :use_sudo, false
