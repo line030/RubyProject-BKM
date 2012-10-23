@@ -51,7 +51,7 @@ group :test do
   gem "cucumber-rails"
 end
 
-gem 'authlogic'
+gem 'authlogic', '3.1.0'
 
 gem 'activeadmin'
 
