@@ -17,7 +17,7 @@ BodykitMe::Application.routes.draw do
 
     root :to => 'public#index'
 
-    ActiveAdminF.routes(self)
+    ActiveAdmin.routes(self)
 
     devise_for :admin_users, ActiveAdmin::Devise.config
 
