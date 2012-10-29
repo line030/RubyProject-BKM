@@ -21,6 +21,8 @@ BodykitMe::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  config.assets.prefix = "/bodykitme"
+
   # Defaults to Rails.root.join("public/assets")
   #config.assets.manifest = "/var/www/bodykitme/assets"
 
