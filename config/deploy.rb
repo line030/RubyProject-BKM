@@ -1,3 +1,5 @@
+load "deploy/assets"
+
 set :application, "BodyKit.Me"
 set :deploy_to, "/var/www/bkm/"
 set :rails_env, "production"
