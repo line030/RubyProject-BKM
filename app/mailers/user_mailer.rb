@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => "BodyKit.Me <pfischer@line030.de>"
+  default :from => "global@line030.de"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
