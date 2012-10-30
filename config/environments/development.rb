@@ -49,7 +49,6 @@ BodykitMe::Application.configure do
       :authentication       => 'plain',
       :enable_starttls_auto => false ,
       :openssl_verify_mode => 'none'
-
   }
 
 end

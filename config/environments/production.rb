@@ -1,9 +1,8 @@
 BodykitMe::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-	#config.action_controller.relative_url_root = "/bodykitme"
-	
+
   # Code is not reloaded between requests
-  config.cache_classes = true
+  config.cache_classes = false
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -21,7 +20,7 @@ BodykitMe::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
-  config.assets.prefix = "/bodykitme"
+  #config.assets.prefix = "/bodykitme"
 
   # Defaults to Rails.root.join("public/assets")
   #config.assets.manifest = "/var/www/bodykitme/assets"
@@ -69,6 +68,7 @@ BodykitMe::Application.configure do
   #config.action_mailer.delivery_method = :letter_opener
 
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = :true
   config.action_mailer.smtp_settings = {
       :address              => "mail.line030.de",
       :port                 => 25,
