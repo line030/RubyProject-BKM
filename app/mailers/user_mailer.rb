@@ -13,7 +13,7 @@ class UserMailer < ActionMailer::Base
 
   def registration(user)
     @user = user
-    mail :to => user.email, :subject => "Confirm your registration at Bodykit.Me", :from => "info@bodykit.me"
+    mail :to => user.email, :subject => "Confirm your registration at Bodykit.Me", :from => "pfischer@line030.de"
   end
 
 end
