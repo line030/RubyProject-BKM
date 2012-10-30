@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => "global@line030.de"
+  default :from => "BodyKit.Me <bkm@line030.de>"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -13,7 +13,7 @@ class UserMailer < ActionMailer::Base
 
   def registration(user)
     @user = user
-    mail :to => user.email, :subject => "Confirm your registration at Bodykit.Me", :from => "pfischer@line030.de"
+    mail :to => user.email, :subject => "Confirm your registration at Bodykit.Me"
   end
 
 end
