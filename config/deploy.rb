@@ -5,6 +5,11 @@ set :deploy_to, "/var/www/bkm/"
 set :rails_env, "production"
 set :normalize_asset_timestamps, false
 
+set :rvm_type, :system    # :user is the default
+set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"") # Read from local system
+
+require "rvm/capistrano"
+
 set :user, "app_deployer"
 set :use_sudo, false
 ssh_options[:paranoid] = false;
