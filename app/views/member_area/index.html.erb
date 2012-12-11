@@ -1,5 +1,4 @@
-<div class="dashboard-points pull-right"><p><%= current_points %></p></div>
-<h2>Dashboard</h2>
+<!--<h2>Dashboard</h2>
 <p id="notice"><%= notice %></p>
 
 <br/>
@@ -9,7 +8,18 @@
 </p>
 <br/>
 
-<hr>
+<hr> -->
+<div id="aims">
+    <% if !@aim.nil? %>
+        <h2><%= @aim.name %></h2>
+        <div class="row statistics">
+          <div class="span4"><span class="lbl">Actual</span> <span class="value">93 Kg</span></div>
+          <div class="span4"><span class="lbl">Start</span> <span class="value">93 Kg</span> <span class="note green">+9 Kg</span></div>
+          <div class="span4"><span class="lbl">Goal</span> <span class="value">100 Kg</span> <span class="note">+7 Kg left</span></div>
+        </div>
+        <div id="chart_div" style="margin-top:20px"></div>
+    <% end %>
+</div>
 
   <div class="row-fluid">
     <div class="span6">
@@ -38,7 +48,7 @@
                   <br/>
                   <p>Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
                   <p/>
-                  <div id="chart_div"></div>
+                  <!--<div id="chart_div"></div>-->
 
                   Leg ein weiteren <%= link_to "Zielfortschritt", aim_path(@aim.id) %> an.
               <% end %>
@@ -118,22 +128,17 @@
 <p>What can I do further?</p>
 <p>Statistics, Aims, Progress, etc...</p>
 -->
+<% if !@aim.nil? %>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript">
-
         google.load("visualization", "1", {packages:["corechart"]});
 
-        <% if !@aim.nil?
-
-        %>
         google.setOnLoadCallback(drawChart);
-
-
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Date', '<%=@aim.category.unit.name%>', 'Ziel: <%=@aim.category.unit.name%>'],
+                ['Date', 'Actual <%=@aim.category.unit.name%>', 'Ziel: <%= @aim.value %> <%=@aim.category.unit.name%>'],
 
                     <%
                         size = @aim.aim_progresses.size
@@ -155,13 +160,16 @@
             ]);
 
             var options = {
-                title: 'Ziel: <%= @aim.name %>, Category: <%= @aim.category.name %>'
+                width: 940, height:300, vAxis: { maxValue: <%= (@aim.value * 1.10).to_int %> },
+                hAxis: {viewWindow: {min: 0.5, max: <%= @aimpro.size - 0.5 %>}},
+                legend: { position: 'in', alignment: 'center' }
+                //title: 'Ziel: <%= @aim.name %>, Category: <%= @aim.category.name %>'
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
 
-        <% end %>
 
 </script>
+<% end %>

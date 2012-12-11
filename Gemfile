@@ -64,4 +64,6 @@ gem 'therubyracer' #for usage of LESS
 
 gem 'wicked'
 
+gem 'rvm-capistrano'
+
 

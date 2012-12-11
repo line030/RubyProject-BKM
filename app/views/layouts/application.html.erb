@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <title>BodykitMe</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
@@ -13,47 +12,89 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/dashboard" style="color:white">Bodykit.Me</a>
+      <a class="brand" href="/bodykitme/dashboard">Bodykit.me</a>
       <ul class="nav">
         <% if current_user %>
             <li class="active">
               <%= link_to "Dashboard", url_for(:action => 'index', :controller => 'member_area')%>
             </li>
-            <li>
-              <%= link_to "Logged Workouts", workout_sessions_path%>
+            <li class="dropdown">
+              <a href="#"
+                 class="dropdown-toggle"
+                 data-toggle="dropdown">
+                    Workout
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li>
+                  <%= link_to "Workout Plans", workout_plans_path %>
+                </li>
+                <li>
+                    <%= link_to "Logged Workouts", workout_sessions_path  %>
+                </li>
+              </ul>
             </li>
-            <li>
-              <%= link_to "My Workout Plans", workout_plans_path%>
+            <li class="dropdown">
+              <a href="#"
+                 class="dropdown-toggle"
+                 data-toggle="dropdown">
+                Aims
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li>
+                  <%= link_to "My Aims", aims_path %>
+                </li>
+                <li>
+                  <%= link_to "Browse Common Aims", aims_path  %>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Add Aim", aims_path  %>
+                </li>
+              </ul>
             </li>
-            <li>
-              <%= link_to "My Aims", aims_path%>
-            </li>
-            <li>
-              <%= link_to "Exercises", exercises_path%>
+            <li class="dropdown">
+              <a href="#"
+                 class="dropdown-toggle"
+                 data-toggle="dropdown">
+                Exercises
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li>
+                  <%= link_to "My Exercises", aims_path %>
+                </li>
+                <li>
+                  <%= link_to "Browse Guide", aims_path  %>
+                </li>
+              </ul>
             </li>
         <% end %>
       </ul>
       <ul class="nav pull-right">
         <% if current_user %>
-            <li style="font-size:18px">
-              <%= link_to current_points.to_s + " P", points_path, :class => 'badge',
-                          :style => 'font-size:18px; padding:1px 9px 2px; background:white;color:black; margin:7px 10px 11px'%>
-            </li>
-            <li>
-              <%=  link_to "Logout", logout_path %>
-            </li>
             <li class="divider-vertical"></li>
             <li class="dropdown">
               <a href="#"
                  class="dropdown-toggle"
                  data-toggle="dropdown">
-               <i class="icon-cog icon-white"></i>
                <%= current_user.login %>
                <b class="caret"></b>
               </a>
               <ul class="dropdown-menu pull-right">
                 <li>
+                  <%= link_to current_points.to_s + " Points", points_path  %>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <%=  link_to "Logout", logout_path %>
+                </li>
+                <li>
                   <%= link_to "Edit profile", edit_user_path(current_user)  %>
+                </li>
+                <li>
+                  <%= link_to "Privacy", edit_user_path(current_user)  %>
                 </li>
               </ul>
             </li>
