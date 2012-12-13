@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120704172602) do
+ActiveRecord::Schema.define(:version => 20121213222600) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,21 +57,21 @@ ActiveRecord::Schema.define(:version => 20120704172602) do
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
   create_table "aim_progresses", :force => true do |t|
-    t.integer  "value"
+    t.decimal  "value",        :precision => 8, :scale => 1, :null => false
     t.integer  "aim_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.datetime "logging_date"
   end
 
   create_table "aims", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
     t.integer  "category_id"
-    t.integer  "value"
+    t.decimal  "value",       :precision => 8, :scale => 1,                    :null => false
     t.integer  "user_id"
-    t.boolean  "is_active",   :default => false
+    t.boolean  "is_active",                                 :default => false
   end
 
   create_table "categories", :force => true do |t|

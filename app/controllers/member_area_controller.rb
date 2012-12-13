@@ -10,8 +10,10 @@ class MemberAreaController < ApplicationController
     @aim =  Aim.where("is_active=? and user_id=?",true, current_user.id).find_all().first
 
     if !@aim.nil? && !@aim.aim_progresses.nil?
-
       @aimpro = AimProgress.where("aim_id=?", @aim.id).order('logging_date ASC').all
+      @aim_value_start = @aimpro.first.value
+      @aim_value_actual = @aimpro.last.value
+      @aim_goal = @aim.value
     end
 
     @actual_workout_plan = WorkoutPlan.where("is_active=? and user_id=?",

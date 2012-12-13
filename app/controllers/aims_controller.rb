@@ -161,13 +161,13 @@ class AimsController < ApplicationController
     if params[:aim_progress_value].blank?
 
     else
-      @aim_progress = AimProgress.create!
+      @aim_progress = AimProgress.new
       @aim_progress.value = params[:aim_progress_value]
       @aim_progress.logging_date = params[:aim_progress_logging_date].to_time
       @aim_progress.aim_id = params[:id]
       @aim_progress.save!
 
-      #render :text => @aim_progress.logging_date, :layout => false
+      #render :text => @aim_progress.to_json, :layout => false
       #return
 
       @aim.aim_progresses << @aim_progress

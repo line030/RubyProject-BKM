@@ -10,126 +10,168 @@
 
 <hr> -->
 <div id="aims">
-    <% if !@aim.nil? %>
-        <h2><%= @aim.name %></h2>
-        <div class="row statistics">
-          <div class="span4"><span class="lbl">Actual</span> <span class="value">93 Kg</span></div>
-          <div class="span4"><span class="lbl">Start</span> <span class="value">93 Kg</span> <span class="note green">+9 Kg</span></div>
-          <div class="span4"><span class="lbl">Goal</span> <span class="value">100 Kg</span> <span class="note">+7 Kg left</span></div>
+  <% if !@aim.nil? %>
+      <h2><%= @aim.name %></h2>
+
+      <div class="row statistics">
+        <div class="span4">
+          <span class="lbl">Actual</span> <span class="value"><%= @aim_value_actual %> Kg</span>
+            <span class="note green">
+                <%
+                   delta = @aim_value_actual - @aim_value_start
+                   if delta > 0
+                     concat "+" + delta.to_s
+                   else
+                     concat "-" + delta.to_s
+                   end
+                %> Kg
+            </span>
         </div>
-        <div id="chart_div" style="margin-top:20px"></div>
-    <% end %>
+        <div class="span4">
+          <span class="lbl">Start</span> <span class="value"><%= @aim_value_start %> Kg</span>
+        </div>
+        <div class="span4">
+          <span class="lbl">Goal</span> <span class="value"><%= @aim_goal %> Kg</span>
+            <span class="note gray"><%
+               delta = @aim_goal - @aim_value_actual
+               if delta > 0
+                 concat "+" + delta.to_s
+               else
+                 concat "-" + delta.to_s
+               end
+            %> Kg left
+            </span>
+        </div>
+      </div>
+      <div id="chart_div">
+        <%= image_tag "ajax-loader.gif" %>
+      </div>
+      <div class="aim_controls">
+        <%= link_to image_tag("add_32.png", :border => 0), aim_path(@aim.id) %>
+        <%= link_to image_tag("chart_32.png", :border => 0), aim_path(@aim.id) %>
+      </div>
+  <% end %>
 </div>
 
-  <div class="row-fluid">
-    <div class="span6">
-        <div class="well">
-          <!-- Ziele -->
-          <span style="font-size:36px;">Ziele <br/></span>
+<div class="row-fluid">
+  <div class="span6">
+    <div class="well">
+      <!-- Ziele -->
+      <span style="font-size:36px;">Ziele <br/></span>
 
-          <%if @aim.nil? %>
-
-              <br/><p> Hier kannst du ein
-                <%= link_to "Ziel definieren", new_aim_path %>.
-
-
-          <% else %>
-
-              Aktuelles Ziel: <%= @aim.name %> <br/>
-
-              <% if @aim.aim_progresses.empty? %>
-
-                  <br/>
-                  <p>  Du hast keine geloggten Zielfortschritte!<br/>
-                       Lege jetzt ein <%= link_to "Zielfortschritt", aim_path(@aim.id) %>an.
-                  </p>
-              <% else%>
-
-                  <br/>
-                  <p>Ziel: <%=  @aim.category.name %> <%=  @aim.value   %> <%= @aim.category.unit.name %>
-                  <p/>
-                  <!--<div id="chart_div"></div>-->
-
-                  Leg ein weiteren <%= link_to "Zielfortschritt", aim_path(@aim.id) %> an.
-              <% end %>
-
-          <% end %>
-        </div>
-      <div class="well">
-        <!-- Workout_Sessions -->
-        <span style="font-size:36px;">Trainings Sessions<br/></span>
-
-        <%if !@actual_workout_session.nil? %>
-
-            <br/>
-            Letzte Trainings Session:
-            <br/>
-            <br/>
-            <!-- table -->
-            <p><table class="table table-condensed">
-        <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Trainingstag</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td><%= link_to @actual_workout_session.date.strftime("%d.%m.%Y"), workout_session_path(@actual_workout_session.id) %></td>
-          <td><%=  @actual_workout_session.workout_day.day%></td>
-        </tr>
-        </tbody>
-      </table>
-        <% else %>
-            <br/>
-            Suche dir ein Tag im <%= link_to "Trainingsplan-Bereich!", workout_plans_path %> aus.
-        <% end%>
-
-
-      </div>
-    </div>
-    <div class="well span6">
-      <!-- Workout_Plan -->
-      <span style="font-size:36px;">Trainingspläne<br/></span>
-
-      <%if !@actual_workout_plan.nil? %>
-
-
-          <br/><p> Aktueller Trainingsplan: <%= link_to @actual_workout_plan.name, workout_plan_path(@actual_workout_plan.id)%></p>
+      <% if @aim.nil? %>
 
           <br/>
-          <!-- table -->
-          <p><table class="table table-condensed">
-      <thead>
-      <tr>
-        <th>Trainingstage</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @actual_workout_plan.workout_days.each_with_index do |day| %>
-          <tr>
-            <td><%= link_to day.day , log_workout_path(:id => day.id)%></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-          <p/>
+
+          <p> Hier kannst du ein
+            <%= link_to "Ziel definieren", new_aim_path %>.
+
 
       <% else %>
 
-          Der Wizzard:
-          <%= link_to ">Wizzard!", raw("create_plan_wizard") %>
+          Aktuelles Ziel: <%= @aim.name %> <br/>
 
-      <% end%>
+          <% if @aim.aim_progresses.empty? %>
+
+              <br/>
+
+              <p> Du hast keine geloggten Zielfortschritte!<br/>
+                Lege jetzt ein <%= link_to "Zielfortschritt", aim_path(@aim.id) %>an.
+              </p>
+          <% else %>
+
+              <br/>
+
+              <p>Ziel: <%= @aim.category.name %> <%= @aim.value %> <%= @aim.category.unit.name %>
+
+              <p/>
+              <!--<div id="chart_div"></div>-->
+
+              Leg ein weiteren <%= link_to "Zielfortschritt", aim_path(@aim.id) %> an.
+          <% end %>
+
+      <% end %>
+    </div>
+    <div class="well">
+      <!-- Workout_Sessions -->
+      <span style="font-size:36px;">Trainings Sessions<br/></span>
+
+      <% if !@actual_workout_session.nil? %>
+
+          <br/>
+          Letzte Trainings Session:
+          <br/>
+          <br/>
+          <!-- table -->
+          <p>
+          <table class="table table-condensed">
+            <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Trainingstag</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><%= link_to @actual_workout_session.date.strftime("%d.%m.%Y"), workout_session_path(@actual_workout_session.id) %></td>
+              <td><%= @actual_workout_session.workout_day.day %></td>
+            </tr>
+            </tbody>
+          </table>
+      <% else %>
+          <br/>
+          Suche dir ein Tag im <%= link_to "Trainingsplan-Bereich!", workout_plans_path %> aus.
+      <% end %>
+
+
+    </div>
   </div>
+  <div class="well span6">
+    <!-- Workout_Plan -->
+    <span style="font-size:36px;">Trainingspläne<br/></span>
+
+    <% if !@actual_workout_plan.nil? %>
+
+
+        <br/>
+
+        <p> Aktueller
+          Trainingsplan: <%= link_to @actual_workout_plan.name, workout_plan_path(@actual_workout_plan.id) %></p>
+
+        <br/>
+        <!-- table -->
+        <p>
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>Trainingstage</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @actual_workout_plan.workout_days.each_with_index do |day| %>
+              <tr>
+                <td><%= link_to day.day, log_workout_path(:id => day.id) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <p/>
+
+    <% else %>
+
+        Der Wizzard:
+        <%= link_to ">Wizzard!", raw("create_plan_wizard") %>
+
+    <% end %>
   </div>
+</div>
 
 <!--<span style="font-size:36px;"><%= link_to "Log Workout Now!", new_workout_session_path %></span>
 <p>What can I do further?</p>
 <p>Statistics, Aims, Progress, etc...</p>
 -->
 <% if !@aim.nil? %>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript">
         google.load("visualization", "1", {packages:["corechart"]});
@@ -137,39 +179,47 @@
         google.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Date', 'Actual <%=@aim.category.unit.name%>', 'Ziel: <%= @aim.value %> <%=@aim.category.unit.name%>'],
+            var data = new google.visualization.DataTable();
+            data.addColumn("string", "Date");
+            data.addColumn("number", "Weight");
+            data.addColumn("number", "Goal");
+            data.addColumn({ type: "boolean", role: "certainty" });
 
-                    <%
-                        size = @aim.aim_progresses.size
-                        index = 0
-                    %>
-
-                    <% @aimpro.each do | pro | %>
-
-                      <%if index < size %>
-                        ['<%= pro.logging_date.strftime("%d.%m.%Y") %>',  <%= pro.value %>,  <%= @aim.value %>],
-                      <% else %>
-                        ['<%= pro.logging_date.strftime("%d.%m.%Y") %>',  <%= pro.value %>,  <%= @aim.value %>]
+            data.addRows([
+                <%
+                size = @aim.aim_progresses.size
+                index = 0
+                @aimpro.each do | pro | %>
+                    <%if index < size %>
+                        ['<%= pro.logging_date.strftime("%d.%m") %>', <%= pro.value %>, <%= @aim.value %>, false],
+                        <% else %>
+                        ['<%= pro.logging_date.strftime("%d.%m") %>', <%= pro.value %>, <%= @aim.value %>, false]
 
                         <% index =+ index %>
-                       <% end %>
+                    <% end %>
                 <% end %>
-
-
-            ]);
+            ])
 
             var options = {
-                width: 940, height:300, vAxis: { maxValue: <%= (@aim.value * 1.10).to_int %> },
-                hAxis: {viewWindow: {min: 0.5, max: <%= @aimpro.size - 0.5 %>}},
-                legend: { position: 'in', alignment: 'center' }
+
+                width:940, height:300, vAxis:{ maxValue: <%= (@aim.value * 1.05).to_int %> },
+                hAxis:{viewWindow:{min:0.5, max: <%= @aimpro.size - 0.4 %>}},
+                legend:{ position:'in', alignment:'center' },
+                chartArea: {
+                    left: 40,
+                    bottom: 60,
+                    width: 900,
+                    height: 230
+                },
+                series:{
+                    1:{areaOpacity:0}
+                },
                 //title: 'Ziel: <%= @aim.name %>, Category: <%= @aim.category.name %>'
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
 
-
-</script>
+    </script>
 <% end %>
