@@ -117,15 +117,15 @@
     <%= yield %>
 
   </div>
-  <footer style="text-align:center">
-    <hr/>
-    <span style="letter-spacing: 2em;">
-      <img src="<%= image_path "berlin-flag.png" %>" style="padding-bottom:4px;vertical-align: middle">
-        MADE IN BERLIN
-      <img src="<%= image_path "germany-flag.jpeg" %>" style="padding-bottom:4px;vertical-align: middle">
-    </span>
-  </footer>
 </div>
+<footer style="text-align:center">
+  <div id="footer-divider"></div>
+  <div id="footer-background-gradient"></div>
+  <%= image_tag("fresh-berlin-sky.jpg", :id => "footer-background") %>
+    <span>
+       Made in Berlin
+    </span>
+</footer>
 
 </body>
 </html>
