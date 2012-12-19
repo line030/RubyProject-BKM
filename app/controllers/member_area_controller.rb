@@ -11,8 +11,10 @@ class MemberAreaController < ApplicationController
 
     if !@aim.nil? && !@aim.aim_progresses.nil?
       @aimpro = AimProgress.where("aim_id=?", @aim.id).order('logging_date ASC').all
-      @aim_value_start = @aimpro.first.value
-      @aim_value_actual = @aimpro.last.value
+      @aim_value_start = formatDecimal(@aimpro.first.value, 2)
+      @aim_value_actual = formatDecimal(@aimpro.last.value, 2)
+      @aim_delta_actual = formatDecimal(@aimpro.last.value - @aimpro.first.value, 2)
+      @aim_delta_goal = formatDecimal(@aim.value - @aimpro.last.value, 2)
       @aim_goal = @aim.value
     end
 
@@ -35,5 +37,9 @@ class MemberAreaController < ApplicationController
       format.html # index.html.erb
                   #format.json { render json: @aims }
     end
+  end
+
+  def formatDecimal(value, count)
+    return ("%."+count.to_s+"f") % value
   end
 end
