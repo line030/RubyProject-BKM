@@ -52,6 +52,25 @@
 <div class="row-fluid">
   <div class="span6">
     <h2>Last workout</h2>
+    <h3><%= @actual_workout_session.workout_day.day %></h3>
+    <small><%= @actual_workout_session.date.strftime(('%d-%b-%Y %H:%M %z')) %></small>
+    <% @last_workouts.each do | key, workout |  %>
+        <div class="well">
+          <p>Name: <%= key %></p>
+          <% workout.reverse_each do | model | %>
+              <div style="background: lightblue; margin-right:10px; float: left">
+                <p><%= model.date.strftime(('%d %b %Y')) %></p>
+                  <% model.exerciseData.each do | data | %>
+                      <div>
+                          <p>Wdh: <%= data[:multiplier] %></p>
+                          <p>Kg: <%= data[:value] %></p>
+                      </div>
+                  <% end %>
+              </div>
+          <% end %>
+          <div style="clear:both;"></div>
+        </div>
+    <% end %>
   </div>
   <div class="span6">
     <h2>Followers</h2>

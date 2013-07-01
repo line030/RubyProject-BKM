@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
+ruby '1.9.3'
 gem 'rails', '3.2.2'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-gem 'mysql2'
+#heroku
+gem 'heroku'
 
 
 # Gems used only for assets and not required
@@ -33,7 +34,7 @@ gem 'jquery-rails'
 # gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+#gem 'capistrano'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
@@ -45,10 +46,13 @@ group :development, :test do
   gem "cucumber"
   gem "spork"
   gem "launchy"
+  gem "sqlite3"
+  gem "cucumber-rails"
 end
 
-group :test do
-  gem "cucumber-rails"
+group :production do
+  gem "pg"
+  gem "thin"
 end
 
 gem 'authlogic', '3.1.0'
@@ -64,6 +68,6 @@ gem 'therubyracer' #for usage of LESS
 
 gem 'wicked'
 
-gem 'rvm-capistrano'
+#gem 'rvm-capistrano'
 
 
