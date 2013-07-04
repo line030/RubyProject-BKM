@@ -68,5 +68,7 @@ module BodykitMe
     config.assets.compile = true
 
     config.assets.digest = true
+
+    config.assets.initialize_on_precompile = false
   end
 end
