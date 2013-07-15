@@ -22,7 +22,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
 
     #render action: "new" if !user.enabled?
-    if user.enabled?
+    if !user.nil? && user.enabled?
       @user_session.save
 
       redirect_to dashboard_path, notice: 'Succesfully logged in.'
