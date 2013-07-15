@@ -109,7 +109,7 @@
 
               <br/>
 
-              <p>Ziel: <%= @aim.category.name %> <%= @aim.value %> <%= @aim.category.unit.name %>
+              <p>Ziel: <%= @aim.category.name %> <%= @aim.value %> <%= if !@aim.category.unit.nil? then @aim.category.unit.name end %>
 
               <p/>
               <!--<div id="chart_div"></div>-->
@@ -241,7 +241,7 @@
                 series:{
                     1:{areaOpacity:0}
                 },
-                //title: 'Ziel: <%= @aim.name %>, Category: <%= @aim.category.name %>'
+                //title: 'Ziel: <%= @aim.name %>, Category: <%= if !@aim.category.unit.nil? then @aim.category.name end %>'
             };
 
             var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));

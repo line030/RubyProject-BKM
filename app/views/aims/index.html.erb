@@ -38,7 +38,7 @@
               <% aim.aim_progresses.each_with_index do |pro| %>
                   <tr>
                   <td><%= link_to pro.logging_date.strftime("%d.%m.%Y") , edit_aim_progress_path(:id => pro.id)%></td>
-                  <td><%= pro.value %> <%= aim.category.unit.name %> </td>
+                  <td><%= pro.value %> <%= if !aim.category.nil? then aim.category.unit.name end %> </td>
                   </tr>
               <% end %>
               </tbody>
