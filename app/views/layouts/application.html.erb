@@ -12,13 +12,13 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/bodykitme/dashboard">Bodykit.me</a>
+      <%= link_to "Bodykit.me", dashboard_path, class: "brand" %>
       <ul class="nav">
         <% if current_user %>
-            <li class="active">
-              <%= link_to "Dashboard", url_for(:action => 'index', :controller => 'member_area')%>
+            <li class="<%= 'active' if params[:controller] == 'member_area' %>">
+              <%= link_to "Dashboard", dashboard_path %>
             </li>
-            <li class="dropdown">
+            <li class="dropdown <%= 'active' if params[:controller] == 'workout_plans' %>">
               <a href="#"
                  class="dropdown-toggle"
                  data-toggle="dropdown">
@@ -34,7 +34,7 @@
                 </li>
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown <%= 'active' if params[:controller] == 'aims' %>">
               <a href="#"
                  class="dropdown-toggle"
                  data-toggle="dropdown">
@@ -50,11 +50,11 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                  <%= link_to "Add Aim", aims_path  %>
+                  <%= link_to "Add Aim", new_aim_path  %>
                 </li>
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown <%= 'active' if params[:controller] == 'exercises' %>">
               <a href="#"
                  class="dropdown-toggle"
                  data-toggle="dropdown">
@@ -63,10 +63,10 @@
               </a>
               <ul class="dropdown-menu pull-right">
                 <li>
-                  <%= link_to "My Exercises", aims_path %>
+                  <%= link_to "My Exercises", exercises_path %>
                 </li>
                 <li>
-                  <%= link_to "Browse Guide", aims_path  %>
+                  <%= link_to "Browse Guide", exercises_path  %>
                 </li>
               </ul>
             </li>
@@ -75,7 +75,7 @@
       <ul class="nav pull-right">
         <% if current_user %>
             <li class="divider-vertical"></li>
-            <li class="dropdown">
+            <li class="dropdown <%= 'active' if params[:controller] == 'users' or params[:controller] == 'points' %>">
               <a href="#"
                  class="dropdown-toggle"
                  data-toggle="dropdown">
@@ -110,22 +110,25 @@
     </div>
   </div>
 </div>
-<div class="container" style="margin-top:50px;">
+<div class="container-wrapper" style="position:absolute;min-height:100%;top:0px;left:0px;right:0px;">
+    <div class="container" style="margin-top:50px;margin-bottom:160px">
 
-  <div id="content">
+      <div id="content" style="margin-bottom:20px;">
 
-    <%= yield %>
+        <%= yield %>
 
-  </div>
-</div>
-<footer style="text-align:center">
-  <div id="footer-divider"></div>
-  <div id="footer-background-gradient"></div>
-  <%= image_tag("fresh-berlin-sky.jpg", :id => "footer-background") %>
+      </div>
+    </div>
+  <footer style="position:absolute;bottom:0px;text-align:center; height:150px!important;">
+    <div id="footer-divider"></div>
+    <div id="footer-background-gradient"></div>
+    <%= image_tag("fresh-berlin-sky.jpg", :id => "footer-background") %>
     <span>
        Made in Berlin
     </span>
-</footer>
+  </footer>
+</div>
+
 
 </body>
 </html>
